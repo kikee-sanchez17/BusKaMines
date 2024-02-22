@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "1070491559882",
+    "project_id": "buscamines-11db7",
+    "storage_bucket": "buscamines-11db7.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1070491559882:android:d205b3d73a754444b49133",
+        "android_client_info": {
+          "package_name": "com.example.buscamines"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCZSGD7ARvF8A7i-UnZthtfJHw35LgSMkM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
