@@ -5,28 +5,55 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#58FA58"
+    android:background="@drawable/background"
     tools:context=".MainActivity">
+
+    <!-- Imagen centrada -->
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginStart="0dp"
+        android:layout_marginTop="0dp"
+        android:gravity="center"
         android:orientation="vertical"
-        android:padding="20dp"
-        android:gravity="center">
+        android:padding="20dp">
+
         <!-- botó de login -->
+
+        <ImageView
+            android:layout_width="248dp"
+            android:layout_height="353dp"
+            android:layout_marginStart="2dp"
+            android:layout_marginTop="-177dp"
+            android:src="@drawable/logoconborde" />
+
         <Button
             android:id="@+id/BTMLOGIN"
-            android:layout_width="match_parent"
+            android:layout_width="250dp"
             android:layout_height="wrap_content"
-            android:text="BTMLOGIN"/>
+            android:layout_marginBottom="8dp"
+            android:padding="15dp"
+            android:text="Inicia la sessió"
+            android:textSize="20sp"
+            android:background="@drawable/botopropi"
+            android:textAlignment="center"
+            android:textColor="@color/white"/>
+
         <!--botó de registrar-se -->
         <Button
-
             android:id="@+id/BTMREGISTRO"
-            android:layout_width="match_parent"
+            android:layout_width="250dp"
             android:layout_height="wrap_content"
-            android:onClick="cambiarint"
-            android:text="BTMREGISTRO"
-            />
+            android:padding="15dp"
+            android:text="Registreu-vos"
+            android:textSize="20sp"
+            android:background="@drawable/botopropi"
+            android:textAlignment="center"
+            android:textColor="@color/white"/>
+
     </LinearLayout>
+
 </RelativeLayout>

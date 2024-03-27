@@ -2,4 +2,8 @@
 <resources>
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
+    <!--Rojo botones-->
+    <color name="red">#E6243F</color>
+    <!--Gris de los inputs-->
+    <color name="grey">#AAA2A3</color>
 </resources>

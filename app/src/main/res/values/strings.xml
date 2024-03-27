@@ -8,4 +8,29 @@
     <string name="correoLogin">E-mail</string>
     <string name="passLogin">Password</string>
     <string name="BtnLogin">ENTRAR</string>
+    <string name="TancarSessio">Tancar Sessió</string>
+    <string name="miPuntuaciotxt">Puntuació</string>
+    <string name="puntuacio"> -- </string>
+    <string name="uid"> -- </string>
+    <string name="correo"> -- </string>
+    <string name="nom"> -- </string>
+    <string name="MenuTxt">MENÚ</string>
+    <string name="jugarBtn">Jugar</string>
+    <string name="PuntuacionsBtn">Puntuacions</string>
+    <string name="CreditsBtn">Crèdits</string>
+    <string name="facil">Facil</string>
+    <string name="intermedi">Intermedi</string>
+    <string name="dificil">Dificil</string>
+    <string name="extrema">Extrema</string>
+    <string name="time">Time:</string>
+    <string name="mines_left">Mines Left:</string>
+    <string name="Credits">Crèdits</string>
+    <string name="BTMLOGIN">Login</string>
+    <string name="BTMREGISTER">Registre</string>
+    <string name="continuar">continuar</string>
+
+
+
+    <string name="textoLogin">Inicieu la sessió</string>
+
 </resources>

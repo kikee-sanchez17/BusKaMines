@@ -1,47 +1,33 @@
 package com.example.buscamines
 
-import android.media.MediaPlayer
-import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
-import android.os.Bundle
+import android.content.Intent
+import android.media.MediaPlayer
 import android.os.Handler
+import android.os.Bundle
 
 class Splash : AppCompatActivity() {
-    private var mediaPlayer: MediaPlayer? = null
     private val duracio: Long = 3000;
+    private lateinit var mediaPlayer: MediaPlayer
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_splash)
         //amaguem la barra, pantalla a full
         supportActionBar?.hide()
-        canviarActivity();
-        // Inicializar el MediaPlayer con el sonido
+        // Inicializar MediaPlayer
         mediaPlayer = MediaPlayer.create(this, R.raw.sonido_splash)
 
-        // Comenzar la reproducción del sonido
-        mediaPlayer?.start()
+        // Reproducir el sonido
+        mediaPlayer.start()
 
-        // Manejar la finalización del sonido y pasar a la siguiente actividad
-        mediaPlayer?.setOnCompletionListener {
-            // Aquí puedes iniciar la siguiente actividad
-            // Por ejemplo, puedes iniciar la actividad de login después de que el sonido termine
-            // val intent = Intent(this, LoginActivity::class.java)
-            // startActivity(intent)
-
-            // Finalizar la actividad actual
-            finish()
-        }
+        canviarActivity();
     }
 
     private fun canviarActivity() {
         Handler().postDelayed({
             val intent = Intent(this, MainActivity::class.java)
             startActivity(intent)
+            mediaPlayer.release()
         }, duracio)
-    }
-
-    override fun onDestroy() {
-        super.onDestroy()
-        mediaPlayer?.release() // Liberar recursos de MediaPlayer
     }
 }

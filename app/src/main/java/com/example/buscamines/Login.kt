@@ -16,7 +16,7 @@ class Login : AppCompatActivity() {
     lateinit var correoLogin: EditText
     lateinit var passLogin: EditText
     lateinit var BtnLogin: Button
-    lateinit var auth: FirebaseAuth
+    var auth: FirebaseAuth= FirebaseAuth.getInstance()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -46,9 +46,9 @@ class Login : AppCompatActivity() {
         }
     }
     private fun LogindeJugador(email: String, passw: String) {
-        auth.signInWithEmailAndPassword(email, passw)
-            .addOnCompleteListener(this)
-            { task ->
+
+        auth.signInWithEmailAndPassword(email, passw).addOnCompleteListener(this) {
+                task ->
                 if (task.isSuccessful) {
                     val tx: String = "Benvingut "+ email
                     Toast.makeText(this, tx, Toast.LENGTH_LONG).show()

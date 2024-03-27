@@ -5,7 +5,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#58FA58"
+    android:background="@drawable/background"
     tools:context=".Login">
     <LinearLayout
         android:layout_width="match_parent"
@@ -14,38 +14,90 @@
         android:orientation="vertical"
         android:padding="30dp">
 
+        <ImageView
+            android:id="@+id/imageView"
+            android:layout_width="181dp"
+            android:layout_height="156dp"
+            app:srcCompat="@drawable/logosintexto" />
+
+        <TextView
+            android:id="@+id/textoLogin"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:text="@string/textoLogin"
+            android:textColor="@color/white"
+            android:textSize="30sp" />
+
         <com.google.android.material.textfield.TextInputLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:textColorHint="@color/white"
+            app:boxStrokeColor="@color/white"
+            app:counterTextColor="@color/white"
+            app:endIconTint="@color/white"
+            app:helperTextTextColor="@color/white"
+            app:hintTextColor="@color/white"
+            app:placeholderTextColor="@color/white"
+            app:prefixTextColor="@color/white"
+            app:startIconTint="@color/white"
+            app:suffixTextColor="@color/white">
             <!-- ENTREM EL MAIL -->
             <EditText
                 android:id="@+id/correoLogin"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:hint="@string/correoLogin"
                 android:inputType="textEmailAddress"
-                android:hint="@string/correoLogin" />
+                android:textColor="@color/white"
+                android:textColorHighlight="@color/white"
+                android:textColorHint="@color/white"
+                android:textColorLink="@color/white" />
+
         </com.google.android.material.textfield.TextInputLayout>
+
         <com.google.android.material.textfield.TextInputLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:passwordToggleEnabled="true">
-
+            android:textColorHint="@color/white"
+            app:boxStrokeColor="@color/white"
+            app:counterTextColor="@color/white"
+            app:endIconTint="@color/white"
+            app:helperTextTextColor="@color/white"
+            app:hintTextColor="@color/white"
+            app:passwordToggleEnabled="true"
+            app:passwordToggleTint="@color/white"
+            app:placeholderTextColor="@color/white"
+            app:prefixTextColor="@color/white"
+            app:startIconTint="@color/white"
+            app:suffixTextColor="@color/white">
             <!-- ENTREM EL PASSWORD -->
             <EditText
                 android:id="@+id/passLogin"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
+                android:hint="@string/passLogin"
                 android:inputType="textPassword"
-                android:hint="@string/passLogin" />
+                android:textColor="@color/white"
+                android:textColorHighlight="@color/white"
+                android:textColorHint="@color/white"
+                android:textColorLink="@color/white" />
         </com.google.android.material.textfield.TextInputLayout>
         <!-- BOTO DE ENTRAR -->
         <Button
             android:id="@+id/BtnLogin"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
             android:text="@string/BtnLogin"
-            android:layout_marginTop="10dp"
+            android:layout_width="250dp"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="8dp"
+            android:padding="15dp"
+            android:layout_marginTop="20dp"
+            android:textSize="20sp"
+            android:background="@drawable/botopropi"
+            android:textAlignment="center"
+            android:textColor="@color/white"
             />
+
     </LinearLayout>
 </RelativeLayout>
