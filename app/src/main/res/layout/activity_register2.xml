@@ -5,26 +5,9 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+
+    android:background="@drawable/background"
     tools:context=".Registro">
-    <FrameLayout
-        android:layout_width="409dp"
-        android:layout_height="729dp"
-        tools:layout_editor_absoluteX="1dp"
-        tools:layout_editor_absoluteY="1dp"
-        tools:ignore="MissingConstraints">
-
-        <ImageView
-            android:id="@+id/backgroundImageView"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:scaleType="centerCrop"
-            app:srcCompat="@drawable/background"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"/>
-
-    </FrameLayout>
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -32,71 +15,153 @@
         android:orientation="vertical"
         android:padding="30dp">
 
+        <ImageView
+            android:id="@+id/imageView"
+            android:layout_width="181dp"
+            android:layout_height="156dp"
+            android:layout_marginBottom="20dp"
+            app:srcCompat="@drawable/profile_pic" />
+
+        <TextView
+            android:id="@+id/textoLogin"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:text="@string/Registrar"
+            android:textColor="@color/white"
+            android:layout_marginBottom="30dp"
+            android:textSize="30sp" />
+        <!-- ENTREM EL NOM DEL JUGADOR -->
         <com.google.android.material.textfield.TextInputLayout
             android:layout_width="match_parent"
+            android:layout_height="wrap_content"
             android:textColorHint="@color/white"
-            android:layout_height="wrap_content">
+            app:boxStrokeColor="@color/white"
+            app:counterTextColor="@color/white"
+            app:endIconTint="@color/white"
+            app:helperTextTextColor="@color/white"
+            app:hintTextColor="@color/white"
+            app:placeholderTextColor="@color/white"
+            app:prefixTextColor="@color/white"
+            app:startIconTint="@color/white"
+            app:suffixTextColor="@color/white">
+            <EditText
+                android:id="@+id/nombreEt"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+
+                android:hint="@string/nombreEt"
+                android:textColor="@color/white"
+                android:textColorHighlight="@color/white"
+                android:textColorHint="@color/white"
+                android:textColorLink="@color/white" />
+        </com.google.android.material.textfield.TextInputLayout>
+        <!-- ENTREM EL MAIL -->
+        <com.google.android.material.textfield.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textColorHint="@color/white"
+            app:boxStrokeColor="@color/white"
+            app:counterTextColor="@color/white"
+            app:endIconTint="@color/white"
+            app:helperTextTextColor="@color/white"
+            app:hintTextColor="@color/white"
+            app:placeholderTextColor="@color/white"
+            app:prefixTextColor="@color/white"
+            app:startIconTint="@color/white"
+            app:suffixTextColor="@color/white">
             <EditText
                 android:id="@+id/correoEt"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="@string/correoEt"
                 android:inputType="textEmailAddress"
-                android:textColor="@color/white" />
+                android:textColor="@color/white"
+                android:textColorHighlight="@color/white"
+                android:textColorHint="@color/white"
+                android:textColorLink="@color/white" />
         </com.google.android.material.textfield.TextInputLayout>
-
         <!-- forcem que la entrada sigui un correu electronic -->
+        <!-- ENTREM EL PASSWORD -->
         <com.google.android.material.textfield.TextInputLayout
             android:layout_width="match_parent"
-            android:textColorHint="@color/white"
             android:layout_height="wrap_content"
-            app:passwordToggleEnabled="true">
-            <!-- ENTREM EL PASSWORD -->
+            android:textColorHint="@color/white"
+            app:boxStrokeColor="@color/white"
+            app:counterTextColor="@color/white"
+            app:endIconTint="@color/white"
+            app:helperTextTextColor="@color/white"
+            app:hintTextColor="@color/white"
+            app:passwordToggleEnabled="true"
+            app:passwordToggleTint="@color/white"
+            app:placeholderTextColor="@color/white"
+            app:prefixTextColor="@color/white"
+            app:startIconTint="@color/white"
+            app:suffixTextColor="@color/white">
             <EditText
                 android:id="@+id/passEt"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
-                android:inputType="textPassword"
                 android:hint="@string/passEt"
-                android:textColor="@color/white"/>
-            <!-- forcem que la entrada sigui un password -->
+                android:inputType="textPassword"
+                android:textColor="@color/white"
+                android:textColorHighlight="@color/white"
+                android:textColorHint="@color/white"
+                android:textColorLink="@color/white" />
         </com.google.android.material.textfield.TextInputLayout>
+        <!-- forcem que la entrada sigui un password -->
+        <!-- ENTREM EL segon PASSWORD -->
         <com.google.android.material.textfield.TextInputLayout
             android:layout_width="match_parent"
+            android:layout_height="wrap_content"
             android:textColorHint="@color/white"
-            android:layout_height="wrap_content">
-
-            <!-- ENTREM EL NOM DEL JUGADOR -->
+            app:boxStrokeColor="@color/white"
+            app:counterTextColor="@color/white"
+            app:endIconTint="@color/white"
+            app:helperTextTextColor="@color/white"
+            app:hintTextColor="@color/white"
+            app:passwordToggleEnabled="true"
+            app:passwordToggleTint="@color/white"
+            app:placeholderTextColor="@color/white"
+            app:prefixTextColor="@color/white"
+            app:startIconTint="@color/white"
+            app:suffixTextColor="@color/white">
             <EditText
-                android:id="@+id/nombreEt"
+                android:id="@+id/passEt2"
                 android:layout_width="match_parent"
-                android:layout_marginTop="10dp"
                 android:layout_height="wrap_content"
-                android:hint="@string/nombreEt"
+                android:hint="@string/pass_et2"
+                android:inputType="textPassword"
+                android:textColor="@color/white"
+                android:textColorHighlight="@color/white"
                 android:textColorHint="@color/white"
-                android:textColor="@color/white"/>
+                android:textColorLink="@color/white" />
         </com.google.android.material.textfield.TextInputLayout>
-        <!-- DATA ACTUAL -->
+
+
+
         <TextView
-            android:id="@+id/fechaEt"
+            android:id="@+id/fechatexto"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:gravity="center"
-            android:hint="@string/fechaTxt"
-            android:textColorHint="@color/white"
-            android:textSize="20sp"
             android:layout_marginTop="10dp"
+            android:gravity="center"
             android:textColor="@color/white"
-            />
+            android:textSize="20sp" />
 
         <!-- BOTO DE ENTRAR -->
         <Button
             android:id="@+id/Registrar"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
             android:text="@string/Registrar"
-            android:layout_marginTop="10dp"
+            android:layout_width="250dp"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="8dp"
+            android:padding="15dp"
+            android:background="@drawable/botopropi"
+            android:textAlignment="center"
+            android:textColor="@color/white"
+            android:layout_marginTop="100dp"
+            android:textSize="20sp"
             />
     </LinearLayout>
 </RelativeLayout>

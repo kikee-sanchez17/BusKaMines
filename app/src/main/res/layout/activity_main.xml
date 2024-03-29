@@ -23,9 +23,11 @@
 
         <!-- botó de login -->
 
+        <!--botó de registrar-se -->
+
         <ImageView
-            android:layout_width="248dp"
-            android:layout_height="353dp"
+            android:layout_width="308dp"
+            android:layout_height="461dp"
             android:layout_marginStart="2dp"
             android:layout_marginTop="-177dp"
             android:src="@drawable/logoconborde" />
@@ -34,19 +36,19 @@
             android:id="@+id/BTMLOGIN"
             android:layout_width="250dp"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="8dp"
+            android:layout_marginBottom="18dp"
+            android:background="@drawable/botopropi"
             android:padding="15dp"
             android:text="Inicia la sessió"
-            android:textSize="20sp"
-            android:background="@drawable/botopropi"
             android:textAlignment="center"
-            android:textColor="@color/white"/>
+            android:textColor="@color/white"
+            android:textSize="20sp" />
 
-        <!--botó de registrar-se -->
         <Button
             android:id="@+id/BTMREGISTRO"
             android:layout_width="250dp"
             android:layout_height="wrap_content"
+            android:onClick="cambiarint"
             android:padding="15dp"
             android:text="Registreu-vos"
             android:textSize="20sp"

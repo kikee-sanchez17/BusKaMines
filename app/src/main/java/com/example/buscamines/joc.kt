@@ -6,6 +6,7 @@ import android.media.AudioManager
 import android.media.SoundPool
 import android.os.Build
 import android.os.Bundle
+import android.os.Handler
 import android.util.Log
 import android.view.Gravity
 import android.view.View
@@ -47,7 +48,8 @@ class joc : AppCompatActivity() {
     var digitResources = mutableMapOf<Int, String>()
     private var punts:Int = 0
     private lateinit var sp : SoundPool
-    private var soundId:Int = 0
+    private var soundVictoriaId: Int = 0
+    private var soundDerrotaId: Int = 0
     override fun onCreate(savedInstanceState: Bundle?) {
 
         super.onCreate(savedInstanceState)
@@ -56,7 +58,8 @@ class joc : AppCompatActivity() {
         initializeSoundPool()
 
         // Cargar el sonido
-        soundId = loadSound(R.raw.sonido_splash)
+
+
         nivelSeleccionado = intent.getStringExtra("nivel")
         var intent:Bundle? = intent.extras
         UID = intent?.get("UID").toString()
@@ -169,17 +172,33 @@ class joc : AppCompatActivity() {
                     // check if clicked button contains mine and
                     // stop the game if it's true
                     if (checkIfMine(iView.id)) {
-                        timerTask.cancel()
                         setIconToButton(iView, -3)
-                        val dialog = AlertDialog.Builder(this)
-                        dialog.setCancelable(false)
-                        dialog.setIcon(R.mipmap.ic_launcher_round)
-                        dialog.setTitle("Game over")
-                        dialog.setMessage("Unfortunately, you've lost the game!")
-                        dialog.setPositiveButton("Ok") { dialogInterface, m -> finish() }
-                        dialog.create()
-                        dialog.show()
-                        secondsAfterStart = 0
+                        Handler().postDelayed({
+
+                            // Código a ejecutar después de 2 segundos
+                            timerTask.cancel()
+                            val imageView2 = findViewById<ImageView>(R.id.imageView2)
+                            imageView2.setImageResource(R.drawable.lost)
+                            imageView2.visibility = View.VISIBLE
+                            val continuar_btn = findViewById<Button>(R.id.continuar_btn)
+                            continuar_btn.visibility = View.VISIBLE
+                            tableLayout.visibility = View.GONE
+                            // Inicializar SoundPool
+
+                            // Cargar el sonido
+                            soundDerrotaId = loadSound(R.raw.sonido_derrota)
+
+                            // Reproducir el sonido
+                            playSound(soundDerrotaId)
+
+                            continuar_btn.setOnClickListener {
+                                val intent = Intent(this, Menu::class.java)
+                                startActivity(intent)
+                                finish()
+                            }
+
+                            secondsAfterStart = 0
+                        }, 1000) // 2000 milisegundos = 2 segundos
                     } else {
                         checkNeighbourCells(iView.id)
                     }
@@ -193,14 +212,13 @@ class joc : AppCompatActivity() {
                         continuar_btn.visibility = View.VISIBLE
                         tableLayout.visibility=View.GONE
                         // Inicializar SoundPool
-                        initializeSoundPool()
+
 
                         // Cargar el sonido
-                        soundId = loadSound(R.raw.sonido_splash)
+                        soundVictoriaId = loadSound(R.raw.sonido_victoria)
 
                         // Reproducir el sonido
-                        playSound(soundId)
-                        val dialog = AlertDialog.Builder(this)
+                        playSound(soundVictoriaId)
 
                         continuar_btn.setOnClickListener {
                             val intent= Intent(this, Menu::class.java)
@@ -241,12 +259,14 @@ class joc : AppCompatActivity() {
                         val continuar_btn=findViewById<Button>(R.id.continuar_btn)
                         continuar_btn.visibility = View.VISIBLE
                         tableLayout.visibility=View.GONE
+                        // Inicializar SoundPool
 
+
+                        // Cargar el sonido
+                        soundVictoriaId = loadSound(R.raw.sonido_victoria)
 
                         // Reproducir el sonido
-                        playSound(soundId)
-
-                        val dialog = AlertDialog.Builder(this)
+                        playSound(soundVictoriaId)
 
                         continuar_btn.setOnClickListener {
                             val intent= Intent(this, Menu::class.java)
@@ -517,13 +537,32 @@ class joc : AppCompatActivity() {
         } else {
             sp = SoundPool(1, AudioManager.STREAM_MUSIC, 0)
         }
+        Log.d("SoundPool", "SoundPool initialized")
+
     }
     private fun playSound(soundId: Int) {
         sp.play(soundId, 1F, 1F, 1, 0, 1F)
     }
     private fun loadSound(@RawRes soundResId: Int): Int {
-        return sp.load(this, soundResId, 1)
+        val soundId = sp.load(this, soundResId, 1)
+        sp.setOnLoadCompleteListener { soundPool, sampleId, status ->
+            if (status == 0) {
+                Log.d("SoundPool", "Sound loaded with ID: $sampleId")
+                // Ahora el sonido está listo para ser reproducido
+                if (sampleId == soundVictoriaId) {
+                    // Reproducir el sonido de victoria una vez que esté listo
+                    playSound(soundVictoriaId)
+                } else if (sampleId == soundDerrotaId) {
+                    // Reproducir el sonido de derrota una vez que esté listo
+                    playSound(soundDerrotaId)
+                }
+            } else {
+                Log.w("SoundPool", "Error loading sound with ID: $sampleId")
+            }
+        }
+        return soundId
     }
+
 }
 
 

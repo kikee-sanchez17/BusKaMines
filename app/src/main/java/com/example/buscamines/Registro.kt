@@ -1,6 +1,7 @@
 package com.example.buscamines
 
 import android.annotation.SuppressLint
+import android.content.Context
 import android.content.Intent
 import android.graphics.Typeface
 import androidx.appcompat.app.AppCompatActivity
@@ -11,6 +12,7 @@ import android.widget.Button
 import android.widget.EditText
 import android.widget.TextView
 import android.widget.Toast
+import androidx.appcompat.app.AlertDialog
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.database.DatabaseReference
@@ -22,6 +24,7 @@ import java.util.Locale
 class Registro : AppCompatActivity() {
     private lateinit var correoEt: EditText
     private lateinit var passEt: EditText
+    private lateinit var passRepeatEt:EditText
     private lateinit var nombreEt: EditText
     private lateinit var fechaTxt: TextView
     private lateinit var Registrar: Button
@@ -33,8 +36,9 @@ class Registro : AppCompatActivity() {
         correoEt = findViewById(R.id.correoEt)
         passEt = findViewById(R.id.passEt)
         nombreEt = findViewById(R.id.nombreEt)
-        fechaTxt = findViewById(R.id.fechaEt)
+        fechaTxt = findViewById(R.id.fechatexto)
         Registrar = findViewById(R.id.Registrar)
+        passRepeatEt=findViewById(R.id.passEt2)
 
         // Obtener la fecha actual
         val date = Calendar.getInstance().time
@@ -51,6 +55,10 @@ class Registro : AppCompatActivity() {
 
             var email: String = correoEt.getText().toString()
             var pass: String = passEt.getText().toString()
+            var passRepeat: String = passRepeatEt.getText().toString()
+            if (!passwordValidate(this, pass, passRepeat)) {
+                return@setOnClickListener
+            }
             // validació del correu
             // si no es de tipus correu
             if (!Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
@@ -71,6 +79,7 @@ class Registro : AppCompatActivity() {
         fechaTxt.setTypeface(tf)
         /*botons*/
         Registrar.setTypeface(tf)
+        passRepeatEt.setTypeface(tf)
     }
     fun RegistrarJugador(email:String, passw:String){
         auth.createUserWithEmailAndPassword(email, passw)
@@ -107,6 +116,10 @@ class Registro : AppCompatActivity() {
             dadesJugador.put ("Nom",nombreString)
             dadesJugador.put ("Data",fechaString)
             dadesJugador.put ("Puntuacio","0")
+            dadesJugador
+                .put (
+                    "Imatge",
+                    "")
             // Creem un punter a la base de dades i li donem un nom
             var database: FirebaseDatabase =
                 FirebaseDatabase.getInstance("https://buscamines-11db7-default-rtdb.europe-west1.firebasedatabase.app/")
@@ -130,6 +143,23 @@ class Registro : AppCompatActivity() {
             Toast.makeText( this,"ERROR CREATE USER",Toast.LENGTH_SHORT).show()
         }
     }
+    fun passwordValidate(context: Context, pass1: String, pass2: String): Boolean {
+        return if (pass1 == pass2) {
+            true // Las contraseñas son iguales
+        } else {
+            // Las contraseñas no coinciden, mostrar diálogo de alerta
+            mostrarAlerta(context)
+            false
+        }
+    }
 
+    fun mostrarAlerta(context: Context) {
+        val builder = AlertDialog.Builder(context)
+        builder.setTitle("Error")
+        builder.setMessage("Las contraseñas no coinciden.")
+        builder.setPositiveButton("Aceptar", null)
+        val dialog = builder.create()
+        dialog.show()
+    }
 
 }

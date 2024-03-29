@@ -35,10 +35,11 @@
             android:gravity="center"/>
         <!-- Imatge alien -->
         <androidx.appcompat.widget.AppCompatImageView
-            android:layout_width="250dp"
-            android:layout_height="250dp"
-            android:id="@+id/logo1"
-            android:src="@drawable/logoconborde" />
+
+            android:layout_width="150dp"
+            android:layout_height="150dp"
+            android:id="@+id/imatgePerfil"
+            android:src="@drawable/profile_pic" />
         <!-- uid -->
         <!-- nom -->
         <TextView
@@ -95,6 +96,20 @@
             android:background="@drawable/botopropi"
             android:padding="15dp"
             android:text="@string/CreditsBtn"
+            android:textAlignment="center"
+            android:textColor="@color/white"
+            android:textSize="20sp" />
+        <!-- BOTO DE Tancar sessió -->
+        <!-- BOTO DE Mi perfil -->
+        <Button
+            android:id="@+id/miperfil"
+            android:layout_width="250dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="2dp"
+            android:layout_marginBottom="8dp"
+            android:background="@drawable/botopropi"
+            android:padding="15dp"
+            android:text="@string/Mi_perfil"
             android:textAlignment="center"
             android:textColor="@color/white"
             android:textSize="20sp" />

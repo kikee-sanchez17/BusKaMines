@@ -1,5 +1,6 @@
 package com.example.buscamines
 
+
 import android.content.Intent
 import android.graphics.Typeface
 import androidx.appcompat.app.AppCompatActivity
@@ -8,6 +9,7 @@ import com.google.firebase.auth.FirebaseUser
 import android.os.Bundle
 import android.util.Log
 import android.widget.Button
+import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
 import com.google.firebase.database.DataSnapshot
@@ -15,17 +17,24 @@ import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
+import com.google.firebase.storage.FirebaseStorage
+import com.google.firebase.storage.StorageReference
+import com.squareup.picasso.Picasso
 
 class Menu : AppCompatActivity() {
     //reference serà el punter que ens envia a la base de dades de jugadors
     lateinit var reference: DatabaseReference
     //creem unes variables per comprovar ususari i authentificació
     lateinit var auth: FirebaseAuth
+
+    lateinit var imatgePerfil: ImageView
+
     /*butons*/
     lateinit var tancarSessio: Button
     lateinit var CreditsBtn: Button
     lateinit var PuntuacionsBtn: Button
     lateinit var jugarBtn: Button
+    lateinit var miperfilBtn: Button
 
     /*text menu*/
     lateinit var miPuntuaciotxt: TextView
@@ -34,27 +43,45 @@ class Menu : AppCompatActivity() {
     lateinit var nom: TextView
     lateinit var uid: String
     var user:FirebaseUser? = null;
-
+    lateinit var storageReference: StorageReference
+    lateinit var folderReference: StorageReference
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_menu)
-
-        tancarSessio = findViewById<Button>(R.id.tancarSessio)
-        CreditsBtn = findViewById<Button>(R.id.CreditsBtn)
-        PuntuacionsBtn = findViewById<Button>(R.id.PuntuacionsBtn)
-        jugarBtn = findViewById<Button>(R.id.jugarBtn)
+        storageReference = FirebaseStorage.getInstance().getReference()
+        folderReference = storageReference.child("FotosPerfil")
+        /*botons*/
+        tancarSessio = findViewById(R.id.tancarSessio)
+        CreditsBtn = findViewById(R.id.CreditsBtn)
+        PuntuacionsBtn = findViewById(R.id.PuntuacionsBtn)
+        jugarBtn = findViewById(R.id.jugarBtn)
+        miperfilBtn=findViewById<Button>(R.id.miperfil)
 
         auth = FirebaseAuth.getInstance()
         user = auth.currentUser
-
+        imatgePerfil=findViewById(R.id.imatgePerfil)
+        consulta()
         tancarSessio.setOnClickListener() {
             tancalaSessio()
         }
         CreditsBtn.setOnClickListener() {
             Toast.makeText(this, "Credits", Toast.LENGTH_SHORT).show()
         }
+
+        miperfilBtn.setOnClickListener() {
+            val intent= Intent(this, Perfil::class.java)
+
+
+            intent.putExtra("UID_Jugador",uid)
+            startActivity(intent)
+
+        }
         PuntuacionsBtn.setOnClickListener() {
             Toast.makeText(this, "Puntuacions", Toast.LENGTH_SHORT).show()
+            val intent= Intent(this, Ranking::class.java)
+            startActivity(intent)
+            finish()
+
         }
         jugarBtn.setOnClickListener() {
 
@@ -79,24 +106,21 @@ class Menu : AppCompatActivity() {
         puntuacio = findViewById(R.id.puntuacio)
         correo = findViewById(R.id.correo)
         nom = findViewById(R.id.nom)
-        /*botons*/
-        tancarSessio = findViewById(R.id.tancarSessio)
-        CreditsBtn = findViewById(R.id.CreditsBtn)
-        PuntuacionsBtn = findViewById(R.id.PuntuacionsBtn)
-        jugarBtn = findViewById(R.id.jugarBtn)
+
 
         /*text menu*/
         miPuntuaciotxt.setTypeface(tf)
         puntuacio.setTypeface(tf)
         correo.setTypeface(tf)
         nom.setTypeface(tf)
+
         /*botons*/
         tancarSessio.setTypeface(tf)
         CreditsBtn.setTypeface(tf)
         PuntuacionsBtn.setTypeface(tf)
         jugarBtn.setTypeface(tf)
+        miperfilBtn.setTypeface(tf)
 
-        consulta()
     }
     override fun onStart() {
         usuariLogejat()
@@ -146,6 +170,19 @@ class Menu : AppCompatActivity() {
                         correo.setText(ds.child("Email").getValue().toString())
                         nom.setText(ds.child("Nom").getValue().toString())
                         uid=( ds.child("Uid").getValue().toString())
+                        // Referencia al objeto de almacenamiento de la imagen usando el UID del usuario como nombre del archivo
+                        val imageReference = folderReference.child(uid)
+
+                        imageReference.downloadUrl.addOnSuccessListener { uri ->
+                            // URL de descarga obtenida con éxito
+                            val url = uri.toString()
+                            // Ahora puedes usar esta URL para cargar la imagen en tu ImageView usando Picasso u otra biblioteca
+                            try {
+                                Picasso.get().load(url).into(imatgePerfil)
+                            } catch (e: Exception) {
+                                Picasso.get().load(R.drawable.profile_pic).into(imatgePerfil)
+                            }
+                        }
 
                     }
 

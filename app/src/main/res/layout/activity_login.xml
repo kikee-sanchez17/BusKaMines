@@ -18,7 +18,8 @@
             android:id="@+id/imageView"
             android:layout_width="181dp"
             android:layout_height="156dp"
-            app:srcCompat="@drawable/logosintexto" />
+            android:layout_marginBottom="20dp"
+            app:srcCompat="@drawable/profile_pic" />
 
         <TextView
             android:id="@+id/textoLogin"
@@ -27,6 +28,7 @@
             android:gravity="center"
             android:text="@string/textoLogin"
             android:textColor="@color/white"
+            android:layout_marginBottom="30dp"
             android:textSize="30sp" />
 
         <com.google.android.material.textfield.TextInputLayout
@@ -92,7 +94,7 @@
             android:layout_height="wrap_content"
             android:layout_marginBottom="8dp"
             android:padding="15dp"
-            android:layout_marginTop="20dp"
+            android:layout_marginTop="130dp"
             android:textSize="20sp"
             android:background="@drawable/botopropi"
             android:textAlignment="center"

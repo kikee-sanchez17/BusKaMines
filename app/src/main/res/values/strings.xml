@@ -28,6 +28,11 @@
     <string name="BTMLOGIN">Login</string>
     <string name="BTMREGISTER">Registre</string>
     <string name="continuar">continuar</string>
+    <string name="Mi_perfil">Mi perfil</string>
+    <string name="back">Tornar</string>
+    <string name="canviar_imatge">Canviar imatge</string>
+    <string name="pass_et2"> Repetir Password</string>
+    <string name="ranking">Ranking dels jugadors</string>
 
 
 
