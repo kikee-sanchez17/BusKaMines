@@ -11,7 +11,6 @@ import android.util.Log
 import android.widget.Button
 import android.widget.ImageView
 import android.widget.TextView
-import android.widget.Toast
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.DatabaseReference
@@ -65,19 +64,19 @@ class Menu : AppCompatActivity() {
             tancalaSessio()
         }
         CreditsBtn.setOnClickListener() {
-            Toast.makeText(this, "Credits", Toast.LENGTH_SHORT).show()
+            val intent= Intent(this, CreditsActivity::class.java)
+            startActivity(intent)
+            finish()
         }
 
         miperfilBtn.setOnClickListener() {
             val intent= Intent(this, Perfil::class.java)
-
-
             intent.putExtra("UID_Jugador",uid)
             startActivity(intent)
 
         }
         PuntuacionsBtn.setOnClickListener() {
-            Toast.makeText(this, "Puntuacions", Toast.LENGTH_SHORT).show()
+
             val intent= Intent(this, Ranking::class.java)
             startActivity(intent)
             finish()
@@ -139,8 +138,7 @@ class Menu : AppCompatActivity() {
     {
         if (user !=null)
         {
-            Toast.makeText(this,"Jugador logejat",
-                Toast.LENGTH_SHORT).show()
+
         }
         else
         {

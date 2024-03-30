@@ -17,7 +17,6 @@ import android.widget.TableLayout
 import android.widget.TableRow
 import android.widget.TextView
 import androidx.annotation.RawRes
-import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
@@ -31,7 +30,6 @@ class joc : AppCompatActivity() {
     private var NOM: String =""
     private var PUNTUACIO: String=""
     private var UID: String=""
-    private lateinit var gridLayout: GridLayout
     private lateinit var visited_arr: IntArray // cols*rows array of each button id
     private lateinit var non_clicked_cell:String
     private lateinit var empty_cell:String

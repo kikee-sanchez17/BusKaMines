@@ -1,22 +1,12 @@
 package com.example.buscamines.adapter
 
-import android.content.Intent
 import android.util.Log
 import android.view.View
 import android.widget.ImageView
 import android.widget.TextView
-import android.widget.Toast
 import androidx.recyclerview.widget.RecyclerView
 import com.example.buscamines.Jugador
 import com.example.buscamines.R
-import com.example.buscamines.SeleccioNivell
-import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.auth.FirebaseUser
-import com.google.firebase.database.DataSnapshot
-import com.google.firebase.database.DatabaseError
-import com.google.firebase.database.DatabaseReference
-import com.google.firebase.database.FirebaseDatabase
-import com.google.firebase.database.ValueEventListener
 import com.google.firebase.storage.FirebaseStorage
 import com.google.firebase.storage.StorageReference
 import com.squareup.picasso.Picasso
@@ -26,7 +16,6 @@ class JugadorsViewHolder(view: View, private val profileImageClickListener: Juga
     val imatgePerfil = view.findViewById<ImageView>(R.id.ivJugador)
     lateinit var storageReference: StorageReference
     lateinit var folderReference: StorageReference
-    lateinit var auth: FirebaseAuth
 
     lateinit var uid: String
     init {

@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">BuscaMinEs</string>
+    <string name="nombreEt">Name</string>
+    <string name="fechaTxt">Date</string>
+    <string name="correoLogin">Email</string>
+    <string name="passLogin">Password</string>
+    <string name="BtnLogin">Sign in</string>
+    <string name="TancarSessio">Sign Out</string>
+    <string name="miPuntuaciotxt">Score</string>
+    <string name="MenuTxt">Menu</string>
+    <string name="jugarBtn">Play</string>
+    <string name="PuntuacionsBtn">Ranking</string>
+    <string name="CreditsBtn">Credits</string>
+    <string name="facil">Easy</string>
+    <string name="intermedi">Medium</string>
+    <string name="dificil">Hard</string>
+    <string name="extrema">Extreme</string>
+    <string name="time">Time:</string>
+    <string name="mines_left">Mines Left:</string>
+    <string name="Credits">Credits</string>
+    <string name="BTMREGISTER">Register</string>
+    <string name="continuar">Continue</string>
+    <string name="Mi_perfil">My Profile</string>
+    <string name="back">Back</string>
+    <string name="canviar_imatge">Change Image</string>
+    <string name="pass_et2">Repeat Password</string>
+    <string name="ranking">Ranking players</string>
+    <string name="and">and</string>
+    <string name="textoLogin">Login</string>
+    <string name="Registrar">Register</string>
+    <string name="passEt">Password</string>
+    <string name="correoEt">Email</string>
+</resources>

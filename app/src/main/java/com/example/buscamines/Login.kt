@@ -6,7 +6,7 @@ import android.os.Bundle
 import android.util.Patterns
 import android.widget.Button
 import android.widget.EditText
-import android.widget.Toast
+
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 
@@ -50,13 +50,8 @@ class Login : AppCompatActivity() {
         auth.signInWithEmailAndPassword(email, passw).addOnCompleteListener(this) {
                 task ->
                 if (task.isSuccessful) {
-                    val tx: String = "Benvingut "+ email
-                    Toast.makeText(this, tx, Toast.LENGTH_LONG).show()
                     val user = auth.currentUser
                     updateUI(user)
-                } else {
-                    Toast.makeText(this, "ERROR Autentificació",
-                        Toast.LENGTH_LONG).show()
                 }
             }
     }

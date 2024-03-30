@@ -2,38 +2,40 @@
     <string name="app_name">BuscaMinEs</string>
     <string name="correoEt">E-mail</string>
     <string name="nombreEt">Nom</string>
-    <string name="passEt">Password</string>
+    <string name="passEt">Contrasenya</string>
     <string name="fechaTxt">Data</string>
-    <string name="Registrar">REGISTRAR</string>
+    <string name="Registrar">Registrar</string>
     <string name="correoLogin">E-mail</string>
-    <string name="passLogin">Password</string>
+    <string name="passLogin">Contrasenya</string>
     <string name="BtnLogin">ENTRAR</string>
     <string name="TancarSessio">Tancar Sessió</string>
     <string name="miPuntuaciotxt">Puntuació</string>
-    <string name="puntuacio"> -- </string>
-    <string name="uid"> -- </string>
-    <string name="correo"> -- </string>
-    <string name="nom"> -- </string>
-    <string name="MenuTxt">MENÚ</string>
+    <string name="puntuacio" translatable="false"> -- </string>
+    <string name="uid" translatable="false"> -- </string>
+    <string name="correo" translatable="false"> -- </string>
+    <string name="nom" translatable="false"> -- </string>
+    <string name="MenuTxt">Menú</string>
     <string name="jugarBtn">Jugar</string>
     <string name="PuntuacionsBtn">Puntuacions</string>
     <string name="CreditsBtn">Crèdits</string>
-    <string name="facil">Facil</string>
+    <string name="facil">Fàcil</string>
     <string name="intermedi">Intermedi</string>
-    <string name="dificil">Dificil</string>
+    <string name="dificil">Difícil</string>
     <string name="extrema">Extrema</string>
-    <string name="time">Time:</string>
-    <string name="mines_left">Mines Left:</string>
+    <string name="time">Temps:</string>
+    <string name="mines_left">Mines Restants:</string>
     <string name="Credits">Crèdits</string>
-    <string name="BTMLOGIN">Login</string>
-    <string name="BTMREGISTER">Registre</string>
-    <string name="continuar">continuar</string>
-    <string name="Mi_perfil">Mi perfil</string>
+    <string name="BTMLOGIN" translatable="false">Login</string>
+    <string name="BTMREGISTER">Registrar-se</string>
+    <string name="continuar">Continuar</string>
+    <string name="Mi_perfil">Mi Perfil</string>
     <string name="back">Tornar</string>
     <string name="canviar_imatge">Canviar imatge</string>
-    <string name="pass_et2"> Repetir Password</string>
+    <string name="pass_et2"> Repetir Contrasenya</string>
     <string name="ranking">Ranking dels jugadors</string>
-
+    <string name="miriam" translatable="false">Miriam Murà Calamardo</string>
+    <string name="enric" translatable="false">Enric Sánchez Montoya</string>
+    <string name="and">i</string>
 
 
     <string name="textoLogin">Inicieu la sessió</string>

@@ -6,12 +6,11 @@ import android.content.Intent
 import android.graphics.Typeface
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.util.Log
 import android.util.Patterns
 import android.widget.Button
 import android.widget.EditText
 import android.widget.TextView
-import android.widget.Toast
+
 import androidx.appcompat.app.AlertDialog
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
@@ -87,13 +86,8 @@ class Registro : AppCompatActivity() {
                 34
                 if (task.isSuccessful) {
                     // Sign in success, update UI with the signed-in user's information
-                    Toast.makeText(
-                        this,"createUserWithEmail:success",Toast.LENGTH_SHORT).show()
                     val user = auth.currentUser
                     updateUI(user)
-                } else {
-                    Toast.makeText(baseContext, "Authentication failed.", Toast.LENGTH_SHORT).show()
-                    //updateUI(null)
                 }
             }
     }
@@ -127,21 +121,14 @@ class Registro : AppCompatActivity() {
             if(reference!=null) {
                 //crea un fill amb els valors de dadesJugador
                 reference.child(uidString).setValue(dadesJugador)
-                Toast.makeText(this, "USUARI BEN REGISTRAT",
-                    Toast.LENGTH_SHORT).show()
                 val intent = Intent(this,Menu::class.java)
                 startActivity(intent)
 
             }
-            else{
-                Toast.makeText(this, "ERROR BD", Toast.LENGTH_SHORT).show()
-            }
+
             finish()
         }
-        else
-        {
-            Toast.makeText( this,"ERROR CREATE USER",Toast.LENGTH_SHORT).show()
-        }
+
     }
     fun passwordValidate(context: Context, pass1: String, pass2: String): Boolean {
         return if (pass1 == pass2) {

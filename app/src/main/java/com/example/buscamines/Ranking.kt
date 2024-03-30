@@ -4,12 +4,8 @@ import android.content.Intent
 import android.graphics.Typeface
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.util.Log
 import android.widget.Button
-import android.widget.ImageView
 import android.widget.TextView
-import android.widget.Toast
-import androidx.core.net.toUri
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.buscamines.adapter.JugadorsAdapter
@@ -46,7 +42,6 @@ class Ranking : AppCompatActivity(), JugadorsAdapter.OnProfileImageClickListener
         }
     }
     override fun onProfileImageClick(uid: String) {
-        Toast.makeText(this, "UID del jugador: $uid", Toast.LENGTH_LONG).show()
         val intent = Intent(this, Perfil::class.java)
         intent.putExtra("UID_RankingPlayer",uid)
         startActivity(intent)

@@ -21,8 +21,6 @@ import android.view.View
 import android.widget.Button
 import android.widget.ImageView
 import android.widget.TextView
-import android.widget.Toast
-import android.widget.Toast.LENGTH_LONG
 import androidx.activity.result.ActivityResultLauncher
 import androidx.appcompat.app.AlertDialog
 import androidx.core.app.ActivityCompat
@@ -100,13 +98,6 @@ class Perfil : AppCompatActivity() {
                     pujarFoto(imatgeUri)
 
 
-                } else {
-                    // El usuario canceló la selección de la imagen o ocurrió otro error
-                    Log.e("ActivityResult", "Error: Result Code no es RESULT_OK")
-                    Toast.makeText(
-                        this, "Error recuperant imatge de galeria",
-                        Toast.LENGTH_SHORT
-                    ).show()
                 }
             }
 
@@ -145,7 +136,6 @@ class Perfil : AppCompatActivity() {
             finish()
         }
         canviarimatgeBtn.setOnClickListener {
-            Toast.makeText(this, "EDITAR", Toast.LENGTH_SHORT).show()
             canviaLaImatge()
         }
 
@@ -182,10 +172,7 @@ class Perfil : AppCompatActivity() {
             } else {
                 // El usuario canceló la selección de la imagen o ocurrió otro error
                 Log.e("ActivityResult", "Error: Result Code no es RESULT_OK")
-                Toast.makeText(
-                    this, "Error recuperant imatge de galeria",
-                    Toast.LENGTH_SHORT
-                ).show()
+
             }
         } else {
             // El requestCode no coincide con el que esperamos
@@ -202,10 +189,7 @@ class Perfil : AppCompatActivity() {
 
     private fun usuariLogejat() {
         if (user != null) {
-            Toast.makeText(
-                this, "Jugador logejat",
-                Toast.LENGTH_SHORT
-            ).show()
+
         } else {
             val intent = Intent(this, MainActivity::class.java)
             startActivity(intent)
@@ -399,10 +383,6 @@ class Perfil : AppCompatActivity() {
             .setTitle("CANVIAR IMATGE")
             .setMessage("Seleccionar imatge de: ")
             .setNegativeButton("Galeria") { view, _ ->
-                Toast.makeText(
-                    this, "De galeria",
-                    Toast.LENGTH_SHORT
-                ).show()
                 //mirem primer si tenim permisos per a accedir a Read External Storage
                 if
                         (askForPermissions()) {
@@ -410,11 +390,6 @@ class Perfil : AppCompatActivity() {
                     // Aquí agafarem de la galeria la foto que ens calgui
 
                     activityResultLauncher.launch("image/*")
-                } else {
-                    Toast.makeText(
-                        this, "ERROR PERMISOS",
-                        Toast.LENGTH_SHORT
-                    ).show()
                 }
             }
             .setPositiveButton("Càmera") { _, _ ->
@@ -444,10 +419,7 @@ class Perfil : AppCompatActivity() {
         var uploadTask = folderReference.child(Uids).putBytes(data)
         uploadTask.addOnFailureListener {
             // Handle unsuccessful uploads
-            Toast.makeText(
-                this, "Error enviant imatge a Storage",
-                Toast.LENGTH_SHORT
-            ).show()
+
         }.addOnSuccessListener { taskSnapshot ->
             // taskSnapshot.metadata contains file metadata such as size, content-type, etc.
             // ...
