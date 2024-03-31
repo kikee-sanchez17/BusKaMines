@@ -1,6 +1,7 @@
 package com.example.buscamines
 
 import android.content.Intent
+import android.graphics.Typeface
 import android.media.AudioAttributes
 import android.media.AudioManager
 import android.media.SoundPool
@@ -48,10 +49,13 @@ class joc : AppCompatActivity() {
     private lateinit var sp : SoundPool
     private var soundVictoriaId: Int = 0
     private var soundDerrotaId: Int = 0
+
     override fun onCreate(savedInstanceState: Bundle?) {
 
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_joc)
+        val tf = Typeface.createFromAsset(assets, "fonts/Fredoka-Medium.ttf")
+
         // Inicializar SoundPool
         initializeSoundPool()
 
@@ -101,7 +105,10 @@ class joc : AppCompatActivity() {
         }
         tvTime = findViewById(R.id.time_id);
         tvMines=findViewById(R.id.minesLeft_id);
-        tvMines.text = "Mines Left: ${mines}"
+// Dentro de tu actividad o fragmento
+        tvMines.text = getString(R.string.mines_left, mines)
+        tvTime.setTypeface(tf)
+        tvMines.setTypeface(tf)
         val resourceId = resources.getIdentifier(non_clicked_cell, "drawable", packageName)
         var tableLayout: TableLayout
         var imageButton: ImageView
@@ -115,21 +122,10 @@ class joc : AppCompatActivity() {
             override fun run() {
                 runOnUiThread {
                     secondsAfterStart++
-                    var strTime = "Time: "
                     val minutes = secondsAfterStart / 60
                     val seconds = secondsAfterStart % 60
 
-                    if (minutes < 10) {
-                        strTime += "0"
-                    }
-                    strTime += minutes
-
-                    strTime += ":"
-
-                    if (seconds < 10) {
-                        strTime += "0"
-                    }
-                    strTime += seconds
+                    val strTime = getString(R.string.time, minutes, seconds)
 
                     tvTime.text = strTime
                 }

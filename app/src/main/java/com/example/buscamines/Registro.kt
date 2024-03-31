@@ -21,66 +21,68 @@ import java.util.Calendar
 import java.util.Locale
 
 class Registro : AppCompatActivity() {
-    private lateinit var correoEt: EditText
+    private lateinit var emailEt: EditText
     private lateinit var passEt: EditText
-    private lateinit var passRepeatEt:EditText
-    private lateinit var nombreEt: EditText
-    private lateinit var fechaTxt: TextView
-    private lateinit var Registrar: Button
-    lateinit var auth: FirebaseAuth //FIREBASE AUTENTIFICACIO
+    private lateinit var passRepeatEt: EditText
+    private lateinit var nameEt: EditText
+    private lateinit var dateTxt: TextView
+    private lateinit var Register: Button
+    lateinit var auth: FirebaseAuth // FIREBASE AUTHENTICATION
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_register2)
         auth = FirebaseAuth.getInstance()
-        correoEt = findViewById(R.id.correoEt)
+        emailEt = findViewById(R.id.correoEt)
         passEt = findViewById(R.id.passEt)
-        nombreEt = findViewById(R.id.nombreEt)
-        fechaTxt = findViewById(R.id.fechatexto)
-        Registrar = findViewById(R.id.Registrar)
-        passRepeatEt=findViewById(R.id.passEt2)
+        nameEt = findViewById(R.id.nombreEt)
+        dateTxt = findViewById(R.id.fechatexto)
+        Register = findViewById(R.id.Registrar)
+        passRepeatEt = findViewById(R.id.passEt2)
 
-        // Obtener la fecha actual
+        // Get current date
         val date = Calendar.getInstance().time
 
-        // Formatear la fecha como una cadena
+        // Format the date as a string
         val dateFormat = SimpleDateFormat("dd/MM/yyyy", Locale.getDefault())
         val dateString = dateFormat.format(date)
 
-        // Establecer la fecha en el TextView
-        fechaTxt.text = dateString
+        // Set the date in the TextView
+        dateTxt.text = dateString
 
-        Registrar.setOnClickListener() {
-            //Abans de fer el registre validem les dades
+        Register.setOnClickListener() {
+            // Before registration, validate data
 
-            var email: String = correoEt.getText().toString()
+            var email: String = emailEt.getText().toString()
             var pass: String = passEt.getText().toString()
             var passRepeat: String = passRepeatEt.getText().toString()
             if (!passwordValidate(this, pass, passRepeat)) {
                 return@setOnClickListener
             }
-            // validació del correu
-            // si no es de tipus correu
+            // Email validation
+            // If not in email format
             if (!Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
-                correoEt.setError("Invalid Mail")
+                emailEt.setError(getString(R.string.invalid_email))
             } else if (pass.length < 6) {
-                passEt.setError("Password less than 6 chars")
+                passEt.setError(getString(R.string.short_password))
             } else {
-                RegistrarJugador(email, pass)
+                registerPlayer(email, pass)
             }
 
         }
         /*font*/
-        val tf = Typeface.createFromAsset(assets,"fonts/Fredoka-Medium.ttf")
+        val tf = Typeface.createFromAsset(assets, "fonts/Fredoka-Medium.ttf")
         /*text menu*/
-        correoEt.setTypeface(tf)
+        emailEt.setTypeface(tf)
         passEt.setTypeface(tf)
-        nombreEt.setTypeface(tf)
-        fechaTxt.setTypeface(tf)
-        /*botons*/
-        Registrar.setTypeface(tf)
+        nameEt.setTypeface(tf)
+        dateTxt.setTypeface(tf)
+        /*buttons*/
+        Register.setTypeface(tf)
         passRepeatEt.setTypeface(tf)
     }
-    fun RegistrarJugador(email:String, passw:String){
+
+    fun registerPlayer(email: String, passw: String) {
         auth.createUserWithEmailAndPassword(email, passw)
             .addOnCompleteListener(this) { task ->
                 34
@@ -91,37 +93,33 @@ class Registro : AppCompatActivity() {
                 }
             }
     }
+
     @SuppressLint("SuspiciousIndentation")
-    fun updateUI(user: FirebaseUser?){
-        //hi ha un interrogant perquè podria ser null
-        if (user!=null)
-        {
-            var puntuacio: Int = 0
+    fun updateUI(user: FirebaseUser?) {
+        // There's a question mark because it could be null
+        if (user != null) {
             var uidString: String = user.uid
-            var correoString: String = correoEt.getText().toString()
+            var emailString: String = emailEt.getText().toString()
             var passString: String = passEt.getText().toString()
-            var nombreString: String = nombreEt.getText().toString()
-            var fechaString: String= fechaTxt.getText().toString()
-            //AQUI GUARDA EL CONTINGUT A LA BASE DE DADES
-            var dadesJugador : HashMap<String,String> = HashMap<String, String>()
-            dadesJugador.put ("Uid",uidString)
-            dadesJugador.put ("Email",correoString)
-            dadesJugador.put ("Password",passString)
-            dadesJugador.put ("Nom",nombreString)
-            dadesJugador.put ("Data",fechaString)
-            dadesJugador.put ("Puntuacio","0")
-            dadesJugador
-                .put (
-                    "Imatge",
-                    "")
-            // Creem un punter a la base de dades i li donem un nom
+            var nameString: String = nameEt.getText().toString()
+            var dateString: String = dateTxt.getText().toString()
+            // HERE SAVES THE CONTENT TO THE DATABASE
+            var playerData: HashMap<String, String> = HashMap<String, String>()
+            playerData.put("Uid", uidString)
+            playerData.put("Email", emailString)
+            playerData.put("Password", passString)
+            playerData.put("Name", nameString)
+            playerData.put("Date", dateString)
+            playerData.put("Score", "0")
+
+            // Create a pointer to the database and give it a name
             var database: FirebaseDatabase =
                 FirebaseDatabase.getInstance("https://buscamines-11db7-default-rtdb.europe-west1.firebasedatabase.app/")
             var reference: DatabaseReference = database.getReference("DATA BASE JUGADORS")
-            if(reference!=null) {
-                //crea un fill amb els valors de dadesJugador
-                reference.child(uidString).setValue(dadesJugador)
-                val intent = Intent(this,Menu::class.java)
+            if (reference != null) {
+                // creates a child with the values of playerData
+                reference.child(uidString).setValue(playerData)
+                val intent = Intent(this, Menu::class.java)
                 startActivity(intent)
 
             }
@@ -130,23 +128,23 @@ class Registro : AppCompatActivity() {
         }
 
     }
+
     fun passwordValidate(context: Context, pass1: String, pass2: String): Boolean {
         return if (pass1 == pass2) {
-            true // Las contraseñas son iguales
+            true // Passwords match
         } else {
-            // Las contraseñas no coinciden, mostrar diálogo de alerta
-            mostrarAlerta(context)
+            // Passwords don't match, show alert dialog
+            showAlert(context)
             false
         }
     }
 
-    fun mostrarAlerta(context: Context) {
+    fun showAlert(context: Context) {
         val builder = AlertDialog.Builder(context)
-        builder.setTitle("Error")
-        builder.setMessage("Las contraseñas no coinciden.")
-        builder.setPositiveButton("Aceptar", null)
+        builder.setTitle(context.getString(R.string.error_title))
+        builder.setMessage(context.getString(R.string.error_message))
+        builder.setPositiveButton(context.getString(R.string.accept_button), null)
         val dialog = builder.create()
         dialog.show()
     }
-
 }

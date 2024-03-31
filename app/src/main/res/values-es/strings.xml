@@ -16,8 +16,8 @@
     <string name="intermedi">Medio</string>
     <string name="dificil">Difícil</string>
     <string name="extrema">Extremo</string>
-    <string name="time">Tiempo</string>
-    <string name="mines_left">Minas restantes:</string>
+    <string name="time">Tiempo: %02d:%02d</string>
+    <string name="mines_left">Minas restantes: %d</string>
     <string name="Credits">Créditos</string>
     <string name="BTMREGISTER">Registrarse</string>
     <string name="continuar">Continuar</string>
@@ -31,4 +31,17 @@
     <string name="passEt">Contraseña</string>
     <string name="Registrar">Registrar</string>
     <string name="textoLogin">Iniciar Sesión</string>
+    <string name="fecha_union">Fecha de unión: </string>
+    <string name="dialog_title">Cambiar imagen</string>
+    <string name="dialog_message">Seleccionar imagen de:</string>
+    <string name="dialog_gallery">Galería</string>
+    <string name="dialog_camera">Cámara</string>
+    <string name="error_title">Error</string>
+    <string name="error_message">Las contraseñas no coinciden.</string>
+    <string name="accept_button">Aceptar</string>
+    <string name="invalid_email">Correo electrónico no válido</string>
+    <string name="short_password">La contraseña debe tener al menos 6 caracteres</string>
+
+
+
 </resources>

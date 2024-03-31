@@ -16,8 +16,8 @@
     <string name="intermedi">Medium</string>
     <string name="dificil">Hard</string>
     <string name="extrema">Extreme</string>
-    <string name="time">Time:</string>
-    <string name="mines_left">Mines Left:</string>
+    <string name="time">Time: %02d:%02d</string>
+    <string name="mines_left">Mines Left: %d</string>
     <string name="Credits">Credits</string>
     <string name="BTMREGISTER">Register</string>
     <string name="continuar">Continue</string>
@@ -31,4 +31,16 @@
     <string name="Registrar">Register</string>
     <string name="passEt">Password</string>
     <string name="correoEt">Email</string>
+    <string name="fecha_union">Join date: </string>
+    <string name="dialog_title">Change Image</string>
+    <string name="dialog_message">Select image from:</string>
+    <string name="dialog_gallery">Gallery</string>
+    <string name="dialog_camera">Camera</string>
+    <string name="error_title">Error</string>
+    <string name="error_message">Passwords do not match.</string>
+    <string name="accept_button">Accept</string>
+    <string name="invalid_email">Invalid Email</string>
+    <string name="short_password">Password must be at least 6 characters long</string>
+
+
 </resources>

@@ -22,8 +22,8 @@
     <string name="intermedi">Intermedi</string>
     <string name="dificil">Difícil</string>
     <string name="extrema">Extrema</string>
-    <string name="time">Temps:</string>
-    <string name="mines_left">Mines Restants:</string>
+    <string name="time">Temps: %02d:%02d</string>
+    <string name="mines_left">Mines Restants: %d</string>
     <string name="Credits">Crèdits</string>
     <string name="BTMLOGIN" translatable="false">Login</string>
     <string name="BTMREGISTER">Registrar-se</string>
@@ -36,8 +36,17 @@
     <string name="miriam" translatable="false">Miriam Murà Calamardo</string>
     <string name="enric" translatable="false">Enric Sánchez Montoya</string>
     <string name="and">i</string>
-
-
     <string name="textoLogin">Inicieu la sessió</string>
+    <string name="fecha_union">Data d´unió: </string>
+    <string name="dialog_title">Canviar imatge</string>
+    <string name="dialog_message">Seleccionar imatge de:</string>
+    <string name="dialog_gallery">Galeria</string>
+    <string name="dialog_camera">Càmera</string>
+    <string name="error_title">Error</string>
+    <string name="error_message">Les contrasenyes no coincideixen.</string>
+    <string name="accept_button">Acceptar</string>
+    <string name="invalid_email">Correu electrònic no vàlid</string>
+    <string name="short_password">La contrasenya ha de tenir com a mínim 6 caràcters</string>
+
 
 </resources>

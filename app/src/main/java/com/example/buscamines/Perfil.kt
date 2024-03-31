@@ -42,6 +42,7 @@ import java.util.Date
 import java.util.Locale
 import androidx.activity.result.ActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
+import android.Manifest
 
 class Perfil : AppCompatActivity() {
     //reference serà el punter que ens envia a la base de dades de jugadors
@@ -57,6 +58,8 @@ class Perfil : AppCompatActivity() {
     /*text menu*/
     lateinit var miPuntuaciotxt: TextView
     lateinit var puntuacio: TextView
+    lateinit var join_date: TextView
+
     lateinit var correo: TextView
     lateinit var nom: TextView
     lateinit var uid: String
@@ -67,7 +70,7 @@ class Perfil : AppCompatActivity() {
     private var currentPhotoPath: String = ""
     private var uidRankingPlayer:String=""
     private var uidJugador:String=""
-
+    private val CAMERA_PERMISSION_REQUEST_CODE = 1001
     lateinit var imatgeUri: Uri
     private lateinit var activityResultLauncher: ActivityResultLauncher<String>
     private lateinit var cameraResultLauncher: ActivityResultLauncher<Intent>
@@ -119,7 +122,7 @@ class Perfil : AppCompatActivity() {
         puntuacio = findViewById(R.id.puntuacio)
         correo = findViewById(R.id.correo)
         nom = findViewById(R.id.nom)
-
+        join_date = findViewById(R.id.fecha_union)
 
         /*text menu*/
         miPuntuaciotxt.setTypeface(tf)
@@ -128,6 +131,7 @@ class Perfil : AppCompatActivity() {
         nom.setTypeface(tf)
         canviarimatgeBtn.setTypeface(tf)
         backBtn.setTypeface(tf)
+        join_date.setTypeface(tf)
 
         /*botons*/
         backBtn.setOnClickListener {
@@ -219,6 +223,9 @@ class Perfil : AppCompatActivity() {
                         correo.setText(ds.child("Email").getValue().toString())
                         nom.setText(ds.child("Nom").getValue().toString())
                         uid = (ds.child("Uid").getValue().toString())
+                        join_date.setText(getString(R.string.fecha_union)+" "+ds.child("Data").getValue().toString())
+
+
 
                         // Referencia al objeto de almacenamiento de la imagen usando el UID del usuario como nombre del archivo
                         val imageReference = folderReference.child(uid)
@@ -349,6 +356,16 @@ class Perfil : AppCompatActivity() {
                 return
             }
         }
+        when (requestCode) {
+            CAMERA_PERMISSION_REQUEST_CODE -> {
+                if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    // Permiso concedido, inicia la captura de imágenes
+                    startCamera()
+                } else {
+                    ActivityCompat.requestPermissions(this, arrayOf(Manifest.permission.CAMERA), CAMERA_PERMISSION_REQUEST_CODE)
+                }
+            }
+        }
     }
 
     private fun showPermissionDeniedDialog() {
@@ -373,30 +390,28 @@ class Perfil : AppCompatActivity() {
     }
 
     private fun canviaLaImatge() {
-        //utilitzarem un alertdialog que seleccionara de galeria o agafar una foto
-        // Si volem fer un AlertDialog amb més de dos elements (amb una llista),
-        // Aixó ho fariem amb fragments (que veurem més endevant)
-        // Aquí hi ha un tutorial per veure com es fa:
-        // https://www.codevscolor.com/android-kotlin-list-alert-dialog
-        //Veiem com es crea un de dues opcions (habitualment  acceptar o cancel·lar:
         val dialog = AlertDialog.Builder(this)
-            .setTitle("CANVIAR IMATGE")
-            .setMessage("Seleccionar imatge de: ")
-            .setNegativeButton("Galeria") { view, _ ->
-                //mirem primer si tenim permisos per a accedir a Read External Storage
-                if
-                        (askForPermissions()) {
-                    // Permissions are already granted, do your stuff
-                    // Aquí agafarem de la galeria la foto que ens calgui
-
+            .setTitle(getString(R.string.dialog_title))
+            .setMessage(getString(R.string.dialog_message))
+            .setNegativeButton(getString(R.string.dialog_gallery)) { view, _ ->
+                if (askForPermissions()) {
                     activityResultLauncher.launch("image/*")
                 }
             }
-            .setPositiveButton("Càmera") { _, _ ->
-                startForResult.launch(Intent(MediaStore.ACTION_IMAGE_CAPTURE))
+            .setPositiveButton(getString(R.string.dialog_camera)) { _, _ ->
+                val cameraPermission = Manifest.permission.CAMERA
+
+// Verifica si ya tienes permiso para la cámara
+                if (ContextCompat.checkSelfPermission(this, cameraPermission) == PackageManager.PERMISSION_GRANTED) {
+                    // Si ya tienes permisos, inicia la captura de imágenes
+                    startCamera()
+                } else {
+                    // Si no tienes permisos, solicítalos al usuario
+                    ActivityCompat.requestPermissions(this, arrayOf(cameraPermission), CAMERA_PERMISSION_REQUEST_CODE)
+                }
+
+
             }
-
-
             .setCancelable(false)
             .create()
         dialog.show()
@@ -427,24 +442,6 @@ class Perfil : AppCompatActivity() {
     }
 
     // Función para iniciar la actividad de la cámara
-    private fun dispatchTakePictureIntent() {
-        val takePictureIntent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
-        try {
-            val photoFile: File? = createImageFile()
-            photoFile?.also {
-                val photoURI: Uri = FileProvider.getUriForFile(
-                    this,
-                    "com.example.android.fileprovider",
-                    it
-                )
-                takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, photoURI)
-                cameraResultLauncher.launch(null)
-            }
-        } catch (ex: IOException) {
-            // Error ocurrido mientras se creaba el archivo
-            ex.printStackTrace()
-        }
-    }
 
     @Throws(IOException::class)
     private fun createImageFile(): File? {
@@ -467,6 +464,17 @@ class Perfil : AppCompatActivity() {
         val path = MediaStore.Images.Media.insertImage(contentResolver, bitmap, "Title", null)
         return Uri.parse(path)
     }
+
+    private fun startCamera() {
+        val intent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
+        if (intent.resolveActivity(packageManager) != null) {
+            startForResult.launch(intent)
+        } else {
+            // Manejar la situación si no hay ninguna aplicación de cámara disponible
+        }
+    }
+    // Manejar el resultado de la solicitud de permisos
+
 
 
 }
