@@ -27,6 +27,9 @@ class Registro : AppCompatActivity() {
     private lateinit var nameEt: EditText
     private lateinit var dateTxt: TextView
     private lateinit var Register: Button
+    private lateinit var yes_Account: Button
+    private lateinit var registerTXT:TextView
+
     lateinit var auth: FirebaseAuth // FIREBASE AUTHENTICATION
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -39,6 +42,8 @@ class Registro : AppCompatActivity() {
         dateTxt = findViewById(R.id.fechatexto)
         Register = findViewById(R.id.Registrar)
         passRepeatEt = findViewById(R.id.passEt2)
+        yes_Account = findViewById(R.id.yesaccount)
+        registerTXT = findViewById(R.id.textoRegister)
 
         // Get current date
         val date = Calendar.getInstance().time
@@ -52,7 +57,6 @@ class Registro : AppCompatActivity() {
 
         Register.setOnClickListener() {
             // Before registration, validate data
-
             var email: String = emailEt.getText().toString()
             var pass: String = passEt.getText().toString()
             var passRepeat: String = passRepeatEt.getText().toString()
@@ -70,6 +74,11 @@ class Registro : AppCompatActivity() {
             }
 
         }
+        yes_Account.setOnClickListener {
+            val intent = Intent(this, Login::class.java)
+            startActivity(intent)
+            finish()
+        }
         /*font*/
         val tf = Typeface.createFromAsset(assets, "fonts/Fredoka-Medium.ttf")
         /*text menu*/
@@ -77,15 +86,17 @@ class Registro : AppCompatActivity() {
         passEt.setTypeface(tf)
         nameEt.setTypeface(tf)
         dateTxt.setTypeface(tf)
+        registerTXT.setTypeface(tf)
         /*buttons*/
         Register.setTypeface(tf)
         passRepeatEt.setTypeface(tf)
+        yes_Account.setTypeface(tf)
+
     }
 
     fun registerPlayer(email: String, passw: String) {
         auth.createUserWithEmailAndPassword(email, passw)
             .addOnCompleteListener(this) { task ->
-                34
                 if (task.isSuccessful) {
                     // Sign in success, update UI with the signed-in user's information
                     val user = auth.currentUser
@@ -108,9 +119,9 @@ class Registro : AppCompatActivity() {
             playerData.put("Uid", uidString)
             playerData.put("Email", emailString)
             playerData.put("Password", passString)
-            playerData.put("Name", nameString)
-            playerData.put("Date", dateString)
-            playerData.put("Score", "0")
+            playerData.put("Nom", nameString)
+            playerData.put("Data", dateString)
+            playerData.put("Puntuacio", "0")
 
             // Create a pointer to the database and give it a name
             var database: FirebaseDatabase =

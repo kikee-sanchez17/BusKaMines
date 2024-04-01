@@ -24,6 +24,9 @@
     <string name="extrema">Extrema</string>
     <string name="time">Temps: %02d:%02d</string>
     <string name="mines_left">Mines Restants: %d</string>
+    <string name="no_account">No tinc compte</string>
+    <string name="yes_account">Ja tinc compte</string>
+
     <string name="Credits">Crèdits</string>
     <string name="BTMLOGIN" translatable="false">Login</string>
     <string name="BTMREGISTER">Registrar-se</string>

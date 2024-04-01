@@ -1,6 +1,5 @@
 package com.example.buscamines
 
-
 import android.content.Intent
 import android.graphics.Typeface
 import androidx.appcompat.app.AppCompatActivity
@@ -21,171 +20,155 @@ import com.google.firebase.storage.StorageReference
 import com.squareup.picasso.Picasso
 
 class Menu : AppCompatActivity() {
-    //reference serà el punter que ens envia a la base de dades de jugadors
+    // reference will be the pointer that sends us to the players database
     lateinit var reference: DatabaseReference
-    //creem unes variables per comprovar ususari i authentificació
+    // create variables to check user and authentication
     lateinit var auth: FirebaseAuth
 
-    lateinit var imatgePerfil: ImageView
+    lateinit var profileImage: ImageView
 
-    /*butons*/
-    lateinit var tancarSessio: Button
-    lateinit var CreditsBtn: Button
-    lateinit var PuntuacionsBtn: Button
-    lateinit var jugarBtn: Button
-    lateinit var miperfilBtn: Button
+    /* buttons */
+    lateinit var logoutButton: Button
+    lateinit var creditsButton: Button
+    lateinit var scoresButton: Button
+    lateinit var playButton: Button
+    lateinit var myProfileButton: Button
 
-    /*text menu*/
-    lateinit var miPuntuaciotxt: TextView
-    lateinit var puntuacio: TextView
-    lateinit var correo: TextView
-    lateinit var nom: TextView
+    /* menu text */
+    lateinit var myScoreTxt: TextView
+    lateinit var score: TextView
+    lateinit var email: TextView
+    lateinit var name: TextView
     lateinit var uid: String
     var user:FirebaseUser? = null;
     lateinit var storageReference: StorageReference
     lateinit var folderReference: StorageReference
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_menu)
         storageReference = FirebaseStorage.getInstance().getReference()
         folderReference = storageReference.child("FotosPerfil")
-        /*botons*/
-        tancarSessio = findViewById(R.id.tancarSessio)
-        CreditsBtn = findViewById(R.id.CreditsBtn)
-        PuntuacionsBtn = findViewById(R.id.PuntuacionsBtn)
-        jugarBtn = findViewById(R.id.jugarBtn)
-        miperfilBtn=findViewById<Button>(R.id.miperfil)
+
+        /* buttons */
+        logoutButton = findViewById(R.id.tancarSessio)
+        creditsButton = findViewById(R.id.CreditsBtn)
+        scoresButton = findViewById(R.id.PuntuacionsBtn)
+        playButton = findViewById(R.id.jugarBtn)
+        myProfileButton=findViewById<Button>(R.id.miperfil)
 
         auth = FirebaseAuth.getInstance()
         user = auth.currentUser
-        imatgePerfil=findViewById(R.id.imatgePerfil)
-        consulta()
-        tancarSessio.setOnClickListener() {
-            tancalaSessio()
+        profileImage=findViewById(R.id.imatgePerfil)
+        fetchData()
+        logoutButton.setOnClickListener() {
+            logoutUser()
         }
-        CreditsBtn.setOnClickListener() {
+        creditsButton.setOnClickListener() {
             val intent= Intent(this, CreditsActivity::class.java)
             startActivity(intent)
             finish()
         }
 
-        miperfilBtn.setOnClickListener() {
+        myProfileButton.setOnClickListener() {
             val intent= Intent(this, Perfil::class.java)
-            intent.putExtra("UID_Jugador",uid)
+            intent.putExtra("UID_Player",uid)
             startActivity(intent)
-
         }
-        PuntuacionsBtn.setOnClickListener() {
-
+        scoresButton.setOnClickListener() {
             val intent= Intent(this, Ranking::class.java)
             startActivity(intent)
             finish()
-
         }
-        jugarBtn.setOnClickListener() {
+        playButton.setOnClickListener() {
+            var names : String = name.getText().toString()
+            var scores : String = score.getText().toString()
 
-            var noms : String = nom.getText().toString()
-            var puntuacios : String = puntuacio.getText().toString()
-
-                val intent= Intent(this, SeleccioNivell::class.java)
-                intent.putExtra("UID",uid)
-            intent.putExtra("NOM",noms)
-                intent.putExtra("PUNTUACIO",puntuacios)
-
-
+            val intent= Intent(this, SeleccioNivell::class.java)
+            intent.putExtra("UID",uid)
+            intent.putExtra("NAME",names)
+            intent.putExtra("SCORE",scores)
             startActivity(intent)
-                finish()
-                    }
+            finish()
+        }
 
-        /*font*/
+        /* font */
         val tf = Typeface.createFromAsset(assets, "fonts/Fredoka-Medium.ttf")
 
-        /*text menu*/
-        miPuntuaciotxt = findViewById(R.id.miPuntuaciotxt)
-        puntuacio = findViewById(R.id.puntuacio)
-        correo = findViewById(R.id.correo)
-        nom = findViewById(R.id.nom)
+        /* menu text */
+        myScoreTxt = findViewById(R.id.miPuntuaciotxt)
+        score = findViewById(R.id.puntuacio)
+        email = findViewById(R.id.correo)
+        name = findViewById(R.id.nom)
 
+        /* menu text */
+        myScoreTxt.setTypeface(tf)
+        score.setTypeface(tf)
+        email.setTypeface(tf)
+        name.setTypeface(tf)
 
-        /*text menu*/
-        miPuntuaciotxt.setTypeface(tf)
-        puntuacio.setTypeface(tf)
-        correo.setTypeface(tf)
-        nom.setTypeface(tf)
-
-        /*botons*/
-        tancarSessio.setTypeface(tf)
-        CreditsBtn.setTypeface(tf)
-        PuntuacionsBtn.setTypeface(tf)
-        jugarBtn.setTypeface(tf)
-        miperfilBtn.setTypeface(tf)
-
+        /* buttons */
+        logoutButton.setTypeface(tf)
+        creditsButton.setTypeface(tf)
+        scoresButton.setTypeface(tf)
+        playButton.setTypeface(tf)
+        myProfileButton.setTypeface(tf)
     }
+
     override fun onStart() {
-        usuariLogejat()
+        checkLoggedInUser()
         super.onStart()
     }
 
-    private fun tancalaSessio() {
-        auth.signOut() //tanca la sessió
-        //va a la pantalla inicial
+    private fun logoutUser() {
+        auth.signOut() // logout
+        // go to the initial screen
         val intent= Intent(this, MainActivity::class.java)
         startActivity(intent)
         finish()
     }
 
-    private fun usuariLogejat()
-    {
-        if (user !=null)
-        {
+    private fun checkLoggedInUser() {
+        if (user !=null) {
 
-        }
-        else
-        {
+        } else {
             val intent= Intent(this, MainActivity::class.java)
             startActivity(intent)
             finish()
         }
     }
-    //
-    private fun consulta(){
-        var database: FirebaseDatabase = FirebaseDatabase.getInstance("https://buscamines-11db7-default-rtdb.europe-west1.firebasedatabase.app/")
-        var bdreference: DatabaseReference = database.getReference("DATA BASE JUGADORS")
-        bdreference.addValueEventListener (object: ValueEventListener {
-            override fun onDataChange(snapshot: DataSnapshot) {
-                Log.i("DEBUG", "arrel value" + snapshot.getValue().toString())
-                Log.i("DEBUG", "arrel key" + snapshot.key.toString())
-                var trobat: Boolean = false
-                for (ds in snapshot.getChildren()) {
-                    Log.i ("DEBUG","DS key:"+ds.child("Uid").key.toString())
-                    Log.i ("DEBUG","DS value:"+ds.child("Uid").getValue().toString())
-                    Log.i ("DEBUG","DS data:"+ds.child("Data").getValue().toString())
-                    Log.i ("DEBUG","DS mail:"+ds.child("Email").getValue().toString())
 
+    private fun fetchData() {
+        var database: FirebaseDatabase = FirebaseDatabase.getInstance("https://buscamines-11db7-default-rtdb.europe-west1.firebasedatabase.app/")
+        var dbreference: DatabaseReference = database.getReference("DATA BASE JUGADORS")
+        dbreference.addValueEventListener (object: ValueEventListener {
+            override fun onDataChange(snapshot: DataSnapshot) {
+                var found: Boolean = false
+                for (ds in snapshot.getChildren()) {
                     if (ds.child("Email").getValue().toString().equals(user?.email)){
-                        trobat=true
-                        puntuacio.setText(ds.child("Puntuacio").getValue().toString())
-                        correo.setText(ds.child("Email").getValue().toString())
-                        nom.setText(ds.child("Nom").getValue().toString())
+                        found=true
+                        score.setText(ds.child("Puntuacio").getValue().toString())
+                        email.setText(ds.child("Email").getValue().toString())
+                        name.setText(ds.child("Nom").getValue().toString())
                         uid=( ds.child("Uid").getValue().toString())
-                        // Referencia al objeto de almacenamiento de la imagen usando el UID del usuario como nombre del archivo
+                        // Reference to the storage object of the image using the user's UID as the file name
                         val imageReference = folderReference.child(uid)
 
                         imageReference.downloadUrl.addOnSuccessListener { uri ->
-                            // URL de descarga obtenida con éxito
+                            // URL successfully obtained
                             val url = uri.toString()
-                            // Ahora puedes usar esta URL para cargar la imagen en tu ImageView usando Picasso u otra biblioteca
+                            // Now you can use this URL to load the image into your ImageView using Picasso or another library
                             try {
-                                Picasso.get().load(url).into(imatgePerfil)
+                                Picasso.get().load(url).into(profileImage)
                             } catch (e: Exception) {
-                                Picasso.get().load(R.drawable.profile_pic).into(imatgePerfil)
+                                Picasso.get().load(R.drawable.profile_pic).into(profileImage)
                             }
                         }
 
                     }
 
-                    if (!trobat) {
-                        Log.e ("ERROR","ERROR NO TROBAT MAIL")
+                    if (!found) {
+                        Log.e ("ERROR","ERROR EMAIL NOT FOUND")
                     }
 
                 }
@@ -195,7 +178,4 @@ class Menu : AppCompatActivity() {
             }
         })
     }
-    //
-
-
 }

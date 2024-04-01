@@ -7,17 +7,16 @@ import android.os.Handler
 import android.os.Bundle
 
 class Splash : AppCompatActivity() {
-    private val duracio: Long = 3000;
+    private val duration: Long = 3000;
     private lateinit var mediaPlayer: MediaPlayer
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_splash)
-        //amaguem la barra, pantalla a full
         supportActionBar?.hide()
-        // Inicializar MediaPlayer
+        // Initialize the sound with mediaplayer
         mediaPlayer = MediaPlayer.create(this, R.raw.sonido_splash)
 
-        // Reproducir el sonido
+        // Play the sound
         mediaPlayer.start()
 
         canviarActivity();
@@ -28,6 +27,6 @@ class Splash : AppCompatActivity() {
             val intent = Intent(this, MainActivity::class.java)
             startActivity(intent)
             mediaPlayer.release()
-        }, duracio)
+        }, duration)
     }
 }

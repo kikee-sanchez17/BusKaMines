@@ -41,6 +41,9 @@
     <string name="accept_button">Accept</string>
     <string name="invalid_email">Invalid Email</string>
     <string name="short_password">Password must be at least 6 characters long</string>
+    <string name="no_account">I don´t have an account</string>
+    <string name="yes_account">I have already an account</string>
+
 
 
 </resources>

@@ -45,13 +45,10 @@ import androidx.activity.result.contract.ActivityResultContracts
 import android.Manifest
 
 class Perfil : AppCompatActivity() {
-    //reference serà el punter que ens envia a la base de dades de jugadors
-    lateinit var reference: DatabaseReference
 
-    //creem unes variables per comprovar ususari i authentificació
     lateinit var auth: FirebaseAuth
 
-    /*butons*/
+    /*buttons*/
     lateinit var backBtn: Button
     lateinit var canviarimatgeBtn: Button
 
@@ -73,8 +70,7 @@ class Perfil : AppCompatActivity() {
     private val CAMERA_PERMISSION_REQUEST_CODE = 1001
     lateinit var imatgeUri: Uri
     private lateinit var activityResultLauncher: ActivityResultLauncher<String>
-    private lateinit var cameraResultLauncher: ActivityResultLauncher<Intent>
-
+    //It converts the bitmap into uri and upload the image
     private val startForResult =
         registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result: ActivityResult ->
             if (result.resultCode == Activity.RESULT_OK) {
@@ -88,11 +84,12 @@ class Perfil : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_perfil)
+        //Initialize the Firebase Storage
         storageReference = FirebaseStorage.getInstance().getReference()
         folderReference = storageReference.child("FotosPerfil")
+        //Gallery
         activityResultLauncher =
             registerForActivityResult(ActivityResultContracts.GetContent()) { uri: Uri? ->
-                // Este código se ejecutará cuando la actividad de selección de imagen termine
                 if (uri != null) {
                     // La selección de la imagen fue exitosa
                     imatgeUri = uri
@@ -104,7 +101,6 @@ class Perfil : AppCompatActivity() {
                 }
             }
 
-// Inicialización de cameraResultLauncher
         canviarimatgeBtn = findViewById<Button>(R.id.canviar_imatge)
         backBtn = findViewById<Button>(R.id.back_btn)
 
@@ -133,7 +129,7 @@ class Perfil : AppCompatActivity() {
         backBtn.setTypeface(tf)
         join_date.setTypeface(tf)
 
-        /*botons*/
+        /*buttons*/
         backBtn.setOnClickListener {
             val intent = Intent(this, Menu::class.java)
             startActivity(intent)
@@ -142,7 +138,7 @@ class Perfil : AppCompatActivity() {
         canviarimatgeBtn.setOnClickListener {
             canviaLaImatge()
         }
-
+        //Retrieves the uid's
         var intent:Bundle? = getIntent().extras
         uidRankingPlayer = intent?.get("UID_RankingPlayer").toString()
         uidJugador=intent?.get("UID_Jugador").toString()
@@ -169,17 +165,14 @@ class Perfil : AppCompatActivity() {
         Log.d("ActivityResult", "Request Code: $requestCode, Result Code: $resultCode")
         if (requestCode == REQUEST_CODE) {
             if (resultCode == RESULT_OK) {
-                // La selección de la imagen fue exitosa
                 imatgeUri = data?.data!!
                 Log.d("ActivityResult", "URI de la imagen seleccionada: $imatgeUri")
                 imatgePerfil.setImageURI(imatgeUri)
             } else {
-                // El usuario canceló la selección de la imagen o ocurrió otro error
                 Log.e("ActivityResult", "Error: Result Code no es RESULT_OK")
 
             }
         } else {
-            // El requestCode no coincide con el que esperamos
             Log.e("ActivityResult", "Error: Request Code no es el esperado")
         }
     }
@@ -201,21 +194,16 @@ class Perfil : AppCompatActivity() {
         }
     }
 
-    //
+    //Fills the player information when the user comes from the menu
     private fun consulta() {
         var database: FirebaseDatabase =
             FirebaseDatabase.getInstance("https://buscamines-11db7-default-rtdb.europe-west1.firebasedatabase.app/")
         var bdreference: DatabaseReference = database.getReference("DATA BASE JUGADORS")
         bdreference.addValueEventListener(object : ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
-                Log.i("DEBUG", "arrel value" + snapshot.getValue().toString())
-                Log.i("DEBUG", "arrel key" + snapshot.key.toString())
+
                 var trobat: Boolean = false
                 for (ds in snapshot.getChildren()) {
-                    Log.i("DEBUG", "DS key:" + ds.child("Uid").key.toString())
-                    Log.i("DEBUG", "DS value:" + ds.child("Uid").getValue().toString())
-                    Log.i("DEBUG", "DS data:" + ds.child("Data").getValue().toString())
-                    Log.i("DEBUG", "DS mail:" + ds.child("Email").getValue().toString())
 
                     if (ds.child("Email").getValue().toString().equals(user?.email)) {
                         trobat = true
@@ -225,15 +213,10 @@ class Perfil : AppCompatActivity() {
                         uid = (ds.child("Uid").getValue().toString())
                         join_date.setText(getString(R.string.fecha_union)+" "+ds.child("Data").getValue().toString())
 
-
-
-                        // Referencia al objeto de almacenamiento de la imagen usando el UID del usuario como nombre del archivo
                         val imageReference = folderReference.child(uid)
 
                         imageReference.downloadUrl.addOnSuccessListener { uri ->
-                            // URL de descarga obtenida con éxito
                             val url = uri.toString()
-                            // Ahora puedes usar esta URL para cargar la imagen en tu ImageView usando Picasso u otra biblioteca
                             try {
                                 Picasso.get().load(url).into(imatgePerfil)
                             } catch (e: Exception) {
@@ -256,7 +239,7 @@ class Perfil : AppCompatActivity() {
             }
         })
     }
-    //
+    //When this activity comes from Ranking, this function fills the players information thanks to the UID player
     private fun consultaRanking(uid: String) {
         val database: FirebaseDatabase = FirebaseDatabase.getInstance("https://buscamines-11db7-default-rtdb.europe-west1.firebasedatabase.app/")
         val bdreference: DatabaseReference = database.getReference("DATA BASE JUGADORS")
@@ -276,6 +259,8 @@ class Perfil : AppCompatActivity() {
                         puntuacio.setText(puntuacion)
                         correo.setText(correoe)
                         nom.setText(nombre)
+                        join_date.setText(getString(R.string.fecha_union)+" "+ds.child("Data").getValue().toString())
+
 
                         // Obtener la URL de la imagen del usuario
                         val imageReference = folderReference.child(uid)
@@ -311,7 +296,7 @@ class Perfil : AppCompatActivity() {
             false
         } else true
     }
-
+//Asks gallery permission
     fun askForPermissions(): Boolean {
         val REQUEST_CODE = 201
         if (!isPermissionsAllowed()) {
@@ -333,7 +318,7 @@ class Perfil : AppCompatActivity() {
         }
         return true
     }
-
+//When the permission is granted this function opens the gallery or camera
     override fun onRequestPermissionsResult(
         requestCode:
         Int, permissions: Array<String>, grantResults: IntArray
@@ -401,12 +386,12 @@ class Perfil : AppCompatActivity() {
             .setPositiveButton(getString(R.string.dialog_camera)) { _, _ ->
                 val cameraPermission = Manifest.permission.CAMERA
 
-// Verifica si ya tienes permiso para la cámara
+                // Checks if the permission is granted
                 if (ContextCompat.checkSelfPermission(this, cameraPermission) == PackageManager.PERMISSION_GRANTED) {
                     // Si ya tienes permisos, inicia la captura de imágenes
                     startCamera()
                 } else {
-                    // Si no tienes permisos, solicítalos al usuario
+                    // If not, asks for it
                     ActivityCompat.requestPermissions(this, arrayOf(cameraPermission), CAMERA_PERMISSION_REQUEST_CODE)
                 }
 
@@ -416,7 +401,7 @@ class Perfil : AppCompatActivity() {
             .create()
         dialog.show()
     }
-
+//Upload the image in the Storage
     private fun pujarFoto(imatgeUri: Uri) {
 
         var Uids: String = uid
@@ -441,23 +426,7 @@ class Perfil : AppCompatActivity() {
         }
     }
 
-    // Función para iniciar la actividad de la cámara
-
-    @Throws(IOException::class)
-    private fun createImageFile(): File? {
-        // Crear un nombre de archivo único
-        val timeStamp: String =
-            SimpleDateFormat("yyyyMMdd_HHmmss", Locale.getDefault()).format(Date())
-        val storageDir: File? = getExternalFilesDir(Environment.DIRECTORY_PICTURES)
-        return File.createTempFile(
-            "JPEG_${timeStamp}_", /* prefijo */
-            ".jpg", /* sufijo */
-            storageDir /* directorio */
-        ).apply {
-            // Guardar la ruta del archivo para usarla con la cámara
-            currentPhotoPath = absolutePath
-        }
-    }
+    //It converts bitmap to uri
     private fun bitmapToUri(bitmap: Bitmap): Uri {
         val bytes = ByteArrayOutputStream()
         bitmap.compress(Bitmap.CompressFormat.JPEG, 100, bytes)
@@ -465,15 +434,13 @@ class Perfil : AppCompatActivity() {
         return Uri.parse(path)
     }
 
+    //Start the camera activity
     private fun startCamera() {
         val intent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
         if (intent.resolveActivity(packageManager) != null) {
             startForResult.launch(intent)
-        } else {
-            // Manejar la situación si no hay ninguna aplicación de cámara disponible
         }
     }
-    // Manejar el resultado de la solicitud de permisos
 
 
 

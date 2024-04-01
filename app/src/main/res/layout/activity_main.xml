@@ -39,7 +39,7 @@
             android:layout_marginBottom="18dp"
             android:background="@drawable/botopropi"
             android:padding="15dp"
-            android:text="Inicia la sessió"
+            android:text="@string/textoLogin"
             android:textAlignment="center"
             android:textColor="@color/white"
             android:textSize="20sp" />
@@ -50,7 +50,7 @@
             android:layout_height="wrap_content"
             android:onClick="cambiarint"
             android:padding="15dp"
-            android:text="Registreu-vos"
+            android:text="@string/BTMREGISTER"
             android:textSize="20sp"
             android:background="@drawable/botopropi"
             android:textAlignment="center"

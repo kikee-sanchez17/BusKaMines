@@ -1,6 +1,7 @@
 package com.example.buscamines
 
 import android.content.Intent
+import android.graphics.Typeface
 import android.os.Bundle
 import android.widget.Button
 
@@ -17,33 +18,36 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        var BTMLOGIN = findViewById<Button>(R.id.BTMLOGIN);
-        var BTMREGISTRO = findViewById<Button>(R.id.BTMREGISTRO);
-
+        var loginButton = findViewById<Button>(R.id.BTMLOGIN)
+        var registerButton = findViewById<Button>(R.id.BTMREGISTRO)
+        val tf = Typeface.createFromAsset(assets, "fonts/Fredoka-Medium.ttf")
+        loginButton.setTypeface(tf)
+        registerButton.setTypeface(tf)
         auth = FirebaseAuth.getInstance()
         user = auth.currentUser
-        BTMLOGIN.setOnClickListener(){
-            val intent = Intent(this,Login::class.java)
 
-            // Iniciar la nueva actividad
+        loginButton.setOnClickListener(){
+            val intent = Intent(this, Login::class.java)
+
+            // Start the new activity
             startActivity(intent)
             finish()
         }
-        BTMREGISTRO.setOnClickListener(){
-            // Crear un Intent para iniciar la actividad deseada
-            val intent = Intent(this,Registro::class.java)
+        registerButton.setOnClickListener(){
+            // Create an Intent to start the desired activity
+            val intent = Intent(this, Registro::class.java)
 
-            // Iniciar la nueva actividad
+            // Start the new activity
             startActivity(intent)
             finish()
         }
 
     }
     override fun onStart() {
-        usuariLogejat()
+        checkLoggedInUser()
         super.onStart()
     }
-    private fun usuariLogejat() {
+    private fun checkLoggedInUser() {
         if (user !=null)
         {
             val intent= Intent(this, Menu::class.java)
@@ -51,8 +55,5 @@ class MainActivity : AppCompatActivity() {
             finish()
         }
     }
-
-
-
 
 }

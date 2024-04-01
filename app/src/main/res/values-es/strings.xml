@@ -41,6 +41,9 @@
     <string name="accept_button">Aceptar</string>
     <string name="invalid_email">Correo electrónico no válido</string>
     <string name="short_password">La contraseña debe tener al menos 6 caracteres</string>
+    <string name="no_account">No tengo cuenta</string>
+    <string name="yes_account">Ya tengo cuenta</string>
+
 
 
 

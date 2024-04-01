@@ -24,13 +24,13 @@ class CreditsActivity : AppCompatActivity() {
         currentFragment = centerFragment
         val tf = Typeface.createFromAsset(assets, "fonts/Fredoka-Medium.ttf")
 
-        // Iniciar la transacción del fragmento con el fragmento inicial
+        // Start fragment transaction with the initial fragment
         supportFragmentManager.beginTransaction().apply {
             replace(R.id.fragment_container, centerFragment) // Mostrar CenterFragment primero
             commit()
         }
 
-        // Iniciar el temporizador para cambiar de fragmento después de 3 segundos
+        // Start the timer to change fragment after 3 seconds
         handler = Handler(Looper.getMainLooper())
         handler.postDelayed({
             supportFragmentManager.beginTransaction().apply {
@@ -41,19 +41,19 @@ class CreditsActivity : AppCompatActivity() {
             }
         }, 3000)
 
-        // Configurar el botón para regresar al menú principal
+        // Back button goes to the menu
         buttonBack = findViewById(R.id.button_back)
         buttonBack.setTypeface(tf)
         buttonBack.setOnClickListener {
             val intent= Intent(this, Menu::class.java)
             startActivity(intent)
-            finish() // Cierra esta actividad y regresa al menú principal
+            finish()
         }
     }
 
     override fun onStop() {
         super.onStop()
-        // Detener el temporizador cuando la actividad está en segundo plano
+        // Stops the timer when the app is on the background
         handler.removeCallbacksAndMessages(null)
     }
 

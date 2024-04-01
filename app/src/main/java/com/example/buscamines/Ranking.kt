@@ -33,7 +33,7 @@ class Ranking : AppCompatActivity(), JugadorsAdapter.OnProfileImageClickListener
         backBtn.setTypeface(tf)
         rankingtv.setTypeface(tf)
         initRecyclerView()
-        loadJugadoresFromFirebase()
+        loadPlayersFromFirebase()
 
         backBtn.setOnClickListener {
             val intent = Intent(this, Menu::class.java)
@@ -41,12 +41,12 @@ class Ranking : AppCompatActivity(), JugadorsAdapter.OnProfileImageClickListener
             finish()
         }
     }
+    //If the Profile image is clicked it changes the activity to the picked player information
     override fun onProfileImageClick(uid: String) {
         val intent = Intent(this, Perfil::class.java)
         intent.putExtra("UID_RankingPlayer",uid)
         startActivity(intent)
         finish()
-        // Aquí puedes realizar cualquier acción adicional que necesites con el UID, por ejemplo, pasar a otra actividad
     }
 
     fun initRecyclerView() {
@@ -56,23 +56,23 @@ class Ranking : AppCompatActivity(), JugadorsAdapter.OnProfileImageClickListener
         recyclerView.adapter = jugadorsAdapter
     }
 
-    private fun loadJugadoresFromFirebase() {
+    private fun loadPlayersFromFirebase() {
         bdreference.addListenerForSingleValueEvent(object : ValueEventListener {
             override fun onDataChange(dataSnapshot: DataSnapshot) {
                 jugadors = mutableListOf<Jugador>()
                 for (snapshot in dataSnapshot.children) {
-                    val nombre = snapshot.child("Nom").getValue(String::class.java)
-                    val puntuacion = snapshot.child("Puntuacio").getValue(String::class.java)
+                    val name = snapshot.child("Nom").getValue(String::class.java)
+                    val score = snapshot.child("Puntuacio").getValue(String::class.java)
                     val uid=snapshot.child("Uid").getValue(String::class.java)
-                    nombre?.let { nombre ->
-                        puntuacion?.let { puntuacion ->
+                    name?.let { name ->
+                        score?.let { score ->
                             uid?.let { uid ->
-                                jugadors.add(Jugador(uid,nombre, puntuacion))
+                                jugadors.add(Jugador(uid,name, score))
                             }
                         }
                     }
                 }
-                // Ordenar la lista de jugadores por puntuación
+                // Sort the players by the score
                 jugadors.sortByDescending { it.puntuacio.toInt() }
                 jugadorsAdapter.jugadors = jugadors
                 jugadorsAdapter.notifyDataSetChanged()

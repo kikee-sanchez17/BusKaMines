@@ -22,7 +22,7 @@ class JugadorsAdapter(var jugadors: List<Jugador>, private val profileImageClick
         //aquest mètode és que va passant per cada un dels items i crida al render
         val item=jugadors[position]
         holder.render(item)
-        holder.imatgePerfil.setOnClickListener {
+        holder.profilepic.setOnClickListener {
             profileImageClickListener.onProfileImageClick(item.uid)
         }
     }

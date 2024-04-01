@@ -101,5 +101,22 @@
             android:textColor="@color/white"
             />
 
+
     </LinearLayout>
+
+    <Button
+        android:id="@+id/noaccount"
+        android:layout_width="169dp"
+        android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentBottom="true"
+        android:layout_marginStart="155dp"
+        android:layout_marginTop="41dp"
+        android:layout_marginEnd="146dp"
+        android:layout_marginBottom="25dp"
+        android:background="@drawable/botopropi"
+        android:text="@string/no_account"
+        android:textAlignment="center"
+        android:textColor="@color/white" />
 </RelativeLayout>

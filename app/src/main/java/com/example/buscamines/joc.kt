@@ -42,13 +42,13 @@ class joc : AppCompatActivity() {
     private lateinit var mines_arr: IntArray // array of mines
     private lateinit var tvTime: TextView
     private lateinit var tvMines: TextView
-    private var nivelSeleccionado: String? = null
+    private var level: String? = null
     private var minesCounter = 0
     var digitResources = mutableMapOf<Int, String>()
-    private var punts:Int = 0
+    private var points:Int = 0
     private lateinit var sp : SoundPool
-    private var soundVictoriaId: Int = 0
-    private var soundDerrotaId: Int = 0
+    private var soundVictoryId: Int = 0
+    private var soundDefeatId: Int = 0
 
     override fun onCreate(savedInstanceState: Bundle?) {
 
@@ -62,19 +62,19 @@ class joc : AppCompatActivity() {
         // Cargar el sonido
 
 
-        nivelSeleccionado = intent.getStringExtra("nivel")
+        level = intent.getStringExtra("level")
         var intent:Bundle? = intent.extras
         UID = intent?.get("UID").toString()
-        NOM = intent?.get("NOM").toString()
-        PUNTUACIO = intent?.get("PUNTUACIO").toString()
-        if(nivelSeleccionado=="facil"){
-            punts=5
-        }else if(nivelSeleccionado=="medio"){
-            punts=10
-        }else if(nivelSeleccionado=="dificil"){
-            punts=15
-        }else if(nivelSeleccionado=="extremo"){
-            punts=40
+        NOM = intent?.get("NAME").toString()
+        PUNTUACIO = intent?.get("SCORE").toString()
+        if(level=="facil"){
+            points=5
+        }else if(level=="medio"){
+            points=10
+        }else if(level=="dificil"){
+            points=15
+        }else if(level=="extremo"){
+            points=40
         }
 
         val nivelConfiguraciones = mapOf(
@@ -85,27 +85,27 @@ class joc : AppCompatActivity() {
         )
 
         val digitPrefix = "digit_"
-        val numDigits = 8 // Suponiendo que tienes 8 dígitos
+        val numDigits = 8
 
-        nivelConfiguraciones[nivelSeleccionado]?.let { (nonClickedCell, dimensions, numMines) ->
+        nivelConfiguraciones[level]?.let { (nonClickedCell, dimensions, numMines) ->
             non_clicked_cell = nonClickedCell
             rows = dimensions.first
             columns = dimensions.second
             mines = numMines
 
-            empty_cell = "empty_cell_$nivelSeleccionado"
-            flag = "flag_$nivelSeleccionado"
-            mine_clicked = "mine_clicked_$nivelSeleccionado"
+            empty_cell = "empty_cell_$level"
+            flag = "flag_$level"
+            mine_clicked = "mine_clicked_$level"
 
             for (i in 1..numDigits) {
-                digitResources[i] = "$digitPrefix$i" + "_$nivelSeleccionado"
+                digitResources[i] = "$digitPrefix$i" + "_$level"
                 Log.d("Array_DigitSources", "" + digitResources[0])
 
             }
         }
+        //Initialize variables
         tvTime = findViewById(R.id.time_id);
         tvMines=findViewById(R.id.minesLeft_id);
-// Dentro de tu actividad o fragmento
         tvMines.text = getString(R.string.mines_left, mines)
         tvTime.setTypeface(tf)
         tvMines.setTypeface(tf)
@@ -115,7 +115,7 @@ class joc : AppCompatActivity() {
         mines_arr=generateMines(columns*rows)
         visited_arr = IntArray(columns * rows)
         minesCounter=mines
-        // Crear contador de tiempo
+        // Creating time's game
         var secondsAfterStart = 0
         val timer = Timer()
         val timerTask = object : TimerTask() {
@@ -134,7 +134,7 @@ class joc : AppCompatActivity() {
         timer.scheduleAtFixedRate(timerTask, 0, 1000)
 
         // create ImageView components (buttons) for game board
-        //filas
+        //Rows
         for (i in 0 until rows ) {
             tableLayout = findViewById<View>(R.id.buttonsPanel_id) as TableLayout
             val tableRow = TableRow(this)
@@ -143,7 +143,7 @@ class joc : AppCompatActivity() {
                 TableRow.LayoutParams.WRAP_CONTENT
             )
             tableRow.gravity = Gravity.CENTER
-            //columnas
+            //Columns
             for (j in 0 until columns) {
                 imageButton = ImageView(this)
                 imageButton.setLayoutParams(
@@ -152,6 +152,7 @@ class joc : AppCompatActivity() {
                         TableRow.LayoutParams.WRAP_CONTENT
                     )
                 )
+                //Setting ID
                 imageButton.setId(i * columns + j)
                 imageButton.setImageResource(resourceId)
                 imageButton.setScaleType(ImageView.ScaleType.FIT_CENTER)
@@ -177,14 +178,12 @@ class joc : AppCompatActivity() {
                             val continuar_btn = findViewById<Button>(R.id.continuar_btn)
                             continuar_btn.visibility = View.VISIBLE
                             tableLayout.visibility = View.GONE
-                            // Inicializar SoundPool
+                           //Loading sound defeat
+                            soundDefeatId = loadSound(R.raw.sonido_derrota)
 
-                            // Cargar el sonido
-                            soundDerrotaId = loadSound(R.raw.sonido_derrota)
-
-                            // Reproducir el sonido
-                            playSound(soundDerrotaId)
-
+                            //Playing sound defeat
+                            playSound(soundDefeatId)
+                            //Button to return to the menu
                             continuar_btn.setOnClickListener {
                                 val intent = Intent(this, Menu::class.java)
                                 startActivity(intent)
@@ -196,7 +195,7 @@ class joc : AppCompatActivity() {
                     } else {
                         checkNeighbourCells(iView.id)
                     }
-
+                    //Check if the user wins
                     if (checkIfEnd()) {
                         timerTask.cancel()
                         pointsUpdate()
@@ -205,14 +204,11 @@ class joc : AppCompatActivity() {
                         val continuar_btn=findViewById<Button>(R.id.continuar_btn)
                         continuar_btn.visibility = View.VISIBLE
                         tableLayout.visibility=View.GONE
-                        // Inicializar SoundPool
+                        //Load sound victory
+                        soundVictoryId = loadSound(R.raw.sonido_victoria)
 
-
-                        // Cargar el sonido
-                        soundVictoriaId = loadSound(R.raw.sonido_victoria)
-
-                        // Reproducir el sonido
-                        playSound(soundVictoriaId)
+                        // Playing the sound
+                        playSound(soundVictoryId)
 
                         continuar_btn.setOnClickListener {
                             val intent= Intent(this, Menu::class.java)
@@ -243,7 +239,7 @@ class joc : AppCompatActivity() {
                     }
 
                     // change label text according to the number of mines left
-                    tvMines.text = String.format("Mines Left: %d", minesCounter)
+                    tvMines.text = getString(R.string.mines_left, minesCounter)
 
                     if (checkIfEnd()) {
                         timerTask.cancel()
@@ -253,14 +249,9 @@ class joc : AppCompatActivity() {
                         val continuar_btn=findViewById<Button>(R.id.continuar_btn)
                         continuar_btn.visibility = View.VISIBLE
                         tableLayout.visibility=View.GONE
-                        // Inicializar SoundPool
+                        soundVictoryId = loadSound(R.raw.sonido_victoria)
 
-
-                        // Cargar el sonido
-                        soundVictoriaId = loadSound(R.raw.sonido_victoria)
-
-                        // Reproducir el sonido
-                        playSound(soundVictoriaId)
+                        playSound(soundVictoryId)
 
                         continuar_btn.setOnClickListener {
                             val intent= Intent(this, Menu::class.java)
@@ -274,11 +265,9 @@ class joc : AppCompatActivity() {
 
                     true
                 }
-
-
+                //Add button
                 tableRow.addView(imageButton)
             }
-
 
             tableLayout.addView(
                 tableRow, TableRow.LayoutParams(
@@ -290,6 +279,7 @@ class joc : AppCompatActivity() {
 
 
     }
+    //Generate random mines
     private fun generateMines(square: Int): IntArray {
         mines_arr = IntArray(mines)
         val min = 1
@@ -310,6 +300,7 @@ class joc : AppCompatActivity() {
                 }
             }
         }
+        //Shows the mines position
         for (j in 0 until mines) {
             Log.d("CREATED_ARR", "" + mines_arr[j])
         }
@@ -323,7 +314,7 @@ class joc : AppCompatActivity() {
         }
         return true
     }
-    // Contar el número de minas en las celdas vecinas
+    // Counts the mines on the neighbours cells
     fun checkForMinesCount(firstParam: Int, num: Int): Int {
         if (!checkIfValidCoord(firstParam, num)) {
             return 10
@@ -335,11 +326,13 @@ class joc : AppCompatActivity() {
         }
         return 0
     }
+    //Set the button Icon
     fun setIconToButton(imageView: ImageView?, minesNum: Int) {
         if (imageView == null) {
             Log.d("setIconToButton", "Button was not found!")
             return
         }
+        //initialize the images
         val non_clicked_cell = resources.getIdentifier(non_clicked_cell, "drawable", packageName)
         val digit_1 = resources.getIdentifier(digitResources[1], "drawable", packageName)
         val digit_2 = resources.getIdentifier(digitResources[2], "drawable", packageName)
@@ -354,7 +347,7 @@ class joc : AppCompatActivity() {
         val mineclicked = resources.getIdentifier(mine_clicked, "drawable", packageName)
 
 
-
+        //depending on the number of mines near the cell, it assigns the number of the cell
         when (minesNum) {
             0 -> imageView.setImageResource(emptycell)
             1 -> imageView.setImageResource(digit_1)
@@ -371,6 +364,7 @@ class joc : AppCompatActivity() {
         }
     }
 
+    //Checks if the clicked button it's a mine
     fun checkIfMine(buttonNumInt: Int): Boolean {
         for (i in 0 until mines) {
             if (buttonNumInt == mines_arr[i]) {
@@ -380,17 +374,18 @@ class joc : AppCompatActivity() {
         return false
     }
 
-
+//Checks if it's a valid coordinate
     fun checkIfValidCoord(firstParam: Int, num: Int): Boolean {
-        // Transformar num en coordenadas x e y
+        // transform the num into coordinates
         val x = num % columns
         val y = num / columns
         val xPrev = firstParam % columns
 
-        // Verificar si la celda está dentro del rango
+        // Checks if the cell is in the range
         return x >= 0 && y >= 0 && x < columns && y < rows &&
                 (x != 0 || xPrev != (columns - 1)) && (x != (columns - 1) || xPrev != 0)
     }
+
     fun checkNeighbourCell(firstParam: Int, butNum: Int): Int {
         if (!checkIfValidCoord(firstParam, butNum)) {
             return 10
@@ -401,7 +396,10 @@ class joc : AppCompatActivity() {
                 return 2
             }
         }
-
+        //If the cell does not contain a mine, it calculates the indices of the neighboring cells based on the current cell's position (butNum) and the number of columns (cols). It stores these indices in an array arr.
+        //Then, it iterates over the array of mines (mines_arr) and the array of neighboring cell indices (arr). For each mine and neighboring cell combination, it checks if the neighboring cell is valid and if it contains a mine. If it finds a mine in any neighboring cell, it returns 1, indicating that at least one neighboring cell contains a mine.
+        //
+        //If no neighboring cells contain a mine, it returns 0, indicating that none of the neighboring cells contain a mine.
         val cols = columns
 
         val arr = IntArray(8)
@@ -424,7 +422,7 @@ class joc : AppCompatActivity() {
         return 0
     }
 
-    // draw route until cell with mine as neighbour is found
+    // this function is responsible for scanning the neighboring cells of a given cell, counting the mines in those cells and updating the game GUI accordingly.
     fun checkNeighbourCells(butNum: Int) {
         val queue: Queue<Int> = LinkedList()
         queue.add(butNum)
@@ -511,11 +509,12 @@ class joc : AppCompatActivity() {
             minesInNeighbourCells = 0
         }
     }
+    //Updates de player's points once the game is over
     fun pointsUpdate(){
         var database: FirebaseDatabase = FirebaseDatabase.getInstance("https://buscamines-11db7-default-rtdb.europe-west1.firebasedatabase.app/")
         var bdreference: DatabaseReference = database.getReference("DATA BASE JUGADORS")
         val puntuaciojugador=PUNTUACIO.toInt()
-        val puntsGuanyats=puntuaciojugador+punts
+        val puntsGuanyats=puntuaciojugador+points
         bdreference.child(UID).child("Puntuacio").setValue(puntsGuanyats.toString())
     }
     private fun initializeSoundPool() {
@@ -543,12 +542,12 @@ class joc : AppCompatActivity() {
             if (status == 0) {
                 Log.d("SoundPool", "Sound loaded with ID: $sampleId")
                 // Ahora el sonido está listo para ser reproducido
-                if (sampleId == soundVictoriaId) {
+                if (sampleId == soundVictoryId) {
                     // Reproducir el sonido de victoria una vez que esté listo
-                    playSound(soundVictoriaId)
-                } else if (sampleId == soundDerrotaId) {
+                    playSound(soundVictoryId)
+                } else if (sampleId == soundDefeatId) {
                     // Reproducir el sonido de derrota una vez que esté listo
-                    playSound(soundDerrotaId)
+                    playSound(soundDefeatId)
                 }
             } else {
                 Log.w("SoundPool", "Error loading sound with ID: $sampleId")
